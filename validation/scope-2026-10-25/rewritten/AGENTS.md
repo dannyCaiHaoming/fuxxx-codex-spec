@@ -1,0 +1,1 @@
+本项目采用 fucxxx-codex-spec；相关开发工作读取 /Users/caihaoming/Documents/fuxxx-codex-spec/fucxxx-codex-spec/SKILL.md 及适用参考。项目资料根为 fucxxx-codex-spec/。允许本项目内离线标准库开发；不安装、commit、push，不修改外部 Skill。

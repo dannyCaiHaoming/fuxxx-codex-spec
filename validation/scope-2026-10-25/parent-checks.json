@@ -1,0 +1,24 @@
+{
+  "successive-input": {
+    "exit_code": 1,
+    "output": "test_replace_empty (test_app.Export.test_replace_empty) ... ok\ntest_roundtrip (test_app.Export.test_roundtrip) ... FAIL\n\n======================================================================\nFAIL: test_roundtrip (test_app.Export.test_roundtrip)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-scope-8r33omai/successive-input/test_app.py\", line 9, in test_roundtrip\n    with p.open(encoding='utf-8',newline='') as f: self.assertEqual(list(csv.reader(f)),rows)\n                                                   ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [['中文', 'a', 'b', 'a\"b', 'a'], ['b']] != [['中文', 'a,b', 'a\"b', 'a\\nb']]\n\nFirst differing element 0:\n['中文', 'a', 'b', 'a\"b', 'a']\n['中文', 'a,b', 'a\"b', 'a\\nb']\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\n['b']\n\n- [['中文', 'a', 'b', 'a\"b', 'a'], ['b']]\n?           - --             ^^^^^^\n\n+ [['中文', 'a,b', 'a\"b', 'a\\nb']]\n?                         ^^\n\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nFAILED (failures=1)\n"
+  },
+  "rewritten": {
+    "exit_code": 0,
+    "output": "test_absolute_path_and_replace (test_app.Export.test_absolute_path_and_replace) ... ok\ntest_replace_empty (test_app.Export.test_replace_empty) ... ok\ntest_roundtrip (test_app.Export.test_roundtrip) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nOK\n",
+    "no_active_plan_or_added_framework": true
+  },
+  "successive": {
+    "exit_code": 0,
+    "output": "test_empty (test_app.Export.test_empty) ... ok\ntest_replace (test_app.Export.test_replace) ... ok\ntest_roundtrip (test_app.Export.test_roundtrip) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nOK\n",
+    "after_reviews_unchanged": [
+      "app.py",
+      "test_app.py",
+      "future_metrics.py",
+      "approved-scope.md",
+      "AGENTS.md"
+    ],
+    "no_active_plan_or_added_framework": true
+  },
+  "package_sha256": "418e1c11f8fc17fd878003ed5d708a8b7f58cf2470aa72a43e015d402ce7b23a"
+}
