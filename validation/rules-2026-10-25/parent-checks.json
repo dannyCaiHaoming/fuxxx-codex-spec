@@ -1,0 +1,40 @@
+{
+  "continuous": {
+    "returncode": 0,
+    "output": "test_blank_preserves_existing_file (test_app.Persistence.test_blank_preserves_existing_file) ... ok\ntest_reopen_in_new_process (test_app.Persistence.test_reopen_in_new_process) ... ok\ntest_blank (test_app.Tasks.test_blank) ... ok\ntest_roundtrip (test_app.Tasks.test_roundtrip) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.020s\n\nOK\n",
+    "broken_links": []
+  },
+  "contract": {
+    "returncode": 0,
+    "output": "test_accepted_lengths (test_app.Title.test_accepted_lengths) ... ok\ntest_blank_is_rejected (test_app.Title.test_blank_is_rejected) ... ok\ntest_internal_whitespace_is_preserved (test_app.Title.test_internal_whitespace_is_preserved) ... ok\ntest_over_limit_is_rejected (test_app.Title.test_over_limit_is_rejected) ... ok\ntest_strip_precedes_validation (test_app.Title.test_strip_precedes_validation) ... ok\ntest_unicode_is_counted_as_python_characters (test_app.Title.test_unicode_is_counted_as_python_characters) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n",
+    "broken_links": []
+  },
+  "plan-drift": {
+    "returncode": 0,
+    "output": "test_blank (test_app.Tasks.test_blank) ... ok\ntest_blank_preserves_existing_file (test_app.Tasks.test_blank_preserves_existing_file) ... ok\ntest_reopen_in_new_process (test_app.Tasks.test_reopen_in_new_process) ... ok\ntest_roundtrip (test_app.Tasks.test_roundtrip) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.022s\n\nOK\n",
+    "broken_links": []
+  },
+  "review": {
+    "unchanged_originals": [
+      "AGENTS.md",
+      "README.md",
+      "app.py",
+      "test_app.py"
+    ],
+    "broken_links": []
+  },
+  "shared": {
+    "returncode": 0,
+    "output": "test_normalize (test_tools.Tools.test_normalize) ... ok\ntest_normalize_empty_and_unicode_whitespace (test_tools.Tools.test_normalize_empty_and_unicode_whitespace) ... ok\ntest_render (test_tools.Tools.test_render) ... ok\ntest_render_characters_and_preserved_text (test_tools.Tools.test_render_characters_and_preserved_text) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+    "worker_phase": {
+      "worker_phase_changed_files": [
+        "normalize.py",
+        "render.py"
+      ],
+      "shared_authority_unchanged": true
+    },
+    "worker_code_unchanged_by_coordinator": true,
+    "broken_links": []
+  },
+  "package_sha256": "ef1b5b93f4d8c2fa67f1e2ee15d90531bfcc96208d8cab8b70b6da400e70e239"
+}

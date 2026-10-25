@@ -1,0 +1,7 @@
+{
+  "worker_phase_changed_files": [
+    "normalize.py",
+    "render.py"
+  ],
+  "shared_authority_unchanged": true
+}

@@ -1,0 +1,1 @@
+本样例项目采用 fucxxx-codex-spec。设计、计划、实施、复核、恢复或收口时，读取并使用 /Users/caihaoming/Documents/fuxxx-codex-spec/fucxxx-codex-spec/SKILL.md，按需读取其参考。项目资料根为 fucxxx-codex-spec/。恢复时核对 handoff 和实际产物。只读和审阅停点服从用户请求。当前项目只允许离线标准库操作，不安装、commit、push，不修改本目录以外业务资料。

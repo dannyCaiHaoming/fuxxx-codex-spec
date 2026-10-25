@@ -1,0 +1,11 @@
+{
+  "common_setup": "每个评估者 fresh context；指定隔离项目并明确项目 AGENTS.md 为有效指令；仅离线标准库，不安装/commit/push，不读其他样例或评审信息；前四个自行执行，shared允许两名内部执行者。没有提供预期答案或修复建议。",
+  "requests": {
+    "continuous": "请按 README 把当前任务清单 MVP 开发完成并验证，包含必要的设计、计划和收口，先不要 commit。所有当前需求和接口已在 README 给出。",
+    "review": "根据 README 写出任务清单的总 design、当前 MVP 子 design 和实施 plan，先交给我审阅，等我确认再开发。设计上也请评估旧架构笔记提到的插件加载器是否要放进本轮。",
+    "contract": "继续标题校验 MVP。我现在确认将最大长度从20改为40个 Python 字符，仍然先去首尾空白、空标题拒绝、超过上限抛 ValueError，不允许静默截断。这是本轮已确认的新契约，请完成对应开发、验证和收口，保留本地，不用再问我是否接受40。",
+    "plan-drift": "接着 handoff 把当前任务清单 MVP 做完并验证，现有 design 和 plan 在目录里，请在当前目标内完成收口，先不要提交。",
+    "shared": "按 README 完成当前两个标题工具功能及验证，包含必要设计、计划和收口。这次请用两个独立内部子 Agent 分别实现 normalize 和 render；两个子 Agent 共用当前项目目录，最终由你复核并收口。"
+  },
+  "shared_dispatch": "shared 协调者报告没有 spawn 工具，先保存真实未派发状态；上层按其 plan §0/§1/§2 代派两名 fresh context 执行者；结果交回同一协调者继续复核。"
+}
