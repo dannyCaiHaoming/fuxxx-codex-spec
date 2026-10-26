@@ -1,0 +1,12 @@
+{
+  "source": "local superpowers-dev cache",
+  "declared_version": "7.0.0",
+  "upstream_commit": "not verified; file hashes identify this exact local snapshot",
+  "files": {
+    "package.json": "cac93fa9fd478b35465e56b9df4fbf91909f78c8810070f23c202c7cb5474656",
+    "LICENSE": "a37e0e9697144819e1d965176ac4ae5bc3fa02d11e7812036bbcadf6dafe2400",
+    "skills/brainstorming/SKILL.md": "6ee10d1481b8a2580d5336ff66c5c08acc9d4b251b13bbc3bfd31be99c261d43",
+    "skills/brainstorming/builder-check-prompt.md": "36d51a4723d6f0a3ce5811a0ea3b3a8424f07533947e1355f5d8cb8cce40c55e",
+    "skills/writing-plans/SKILL.md": "a6c67c1900064347c2a329990dd3c555657c51c3ec53b259a08aa01a2c26139a"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "design": {
+    "files": [
+      "AGENTS.md",
+      "app.py",
+      "fucxxx-codex-spec/design.md",
+      "fucxxx-codex-spec/designs/mvp-01-title.md",
+      "fucxxx-codex-spec/handoff.md",
+      "requirements.md",
+      "test_app.py"
+    ]
+  },
+  "plan": {
+    "files": [
+      "AGENTS.md",
+      "app.py",
+      "docs/design.md",
+      "docs/plans/normalize-title.md",
+      "requirements.md",
+      "test_app.py"
+    ]
+  },
+  "complete": {
+    "files": [
+      "AGENTS.md",
+      "app.py",
+      "fucxxx-codex-spec/design.md",
+      "fucxxx-codex-spec/designs/title.md",
+      "fucxxx-codex-spec/evidence/validation.md",
+      "fucxxx-codex-spec/handoff.md",
+      "requirements.md",
+      "test_app.py"
+    ],
+    "tests": "test_nonempty (test_app.TestTitle.test_nonempty) ... ok\ntest_preserve_internal_whitespace (test_app.TestTitle.test_preserve_internal_whitespace) ... ok\ntest_reject_empty_title (test_app.TestTitle.test_reject_empty_title) ... ok\ntest_trim_boundaries (test_app.TestTitle.test_trim_boundaries) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+    "baseline_same_tests": "test_nonempty (test_app.TestTitle.test_nonempty) ... ok\ntest_preserve_internal_whitespace (test_app.TestTitle.test_preserve_internal_whitespace) ... \n  test_preserve_internal_whitespace (test_app.TestTitle.test_preserve_internal_whitespace) (title='one  two') ... FAIL\n  test_preserve_internal_whitespace (test_app.TestTitle.test_preserve_internal_whitespace) (title='one\\ttwo') ... FAIL\n  test_preserve_internal_whitespace (test_app.TestTitle.test_preserve_internal_whitespace) (title='one\\ntwo') ... FAIL\ntest_reject_empty_title (test_app.TestTitle.test_reject_empty_title) ... \n  test_reject_empty_title (test_app.TestTitle.test_reject_empty_title) (title='') ... FAIL\n  test_reject_empty_title (test_app.TestTitle.test_reject_empty_title) (title='   ') ... FAIL\n  test_reject_empty_title (test_app.TestTitle.test_reject_empty_title) (title='\\t\\n\\r') ... FAIL\n  test_reject_empty_title (test_app.TestTitle.test_reject_empty_title) (title='\\u3000\\xa0') ... FAIL\ntest_trim_boundaries (test_app.TestTitle.test_trim_boundaries) ... \n  test_trim_boundaries (test_app.TestTitle.test_trim_boundaries) (title='  title  ') ... FAIL\n  test_trim_boundaries (test_app.TestTitle.test_trim_boundaries) (title='\\t\\ntitle\\r\\n') ... FAIL\n  test_trim_boundaries (test_app.TestTitle.test_trim_boundaries) (title='\\u3000title\\xa0') ... FAIL\n\n======================================================================\nFAIL: test_preserve_internal_whitespace (test_app.TestTitle.test_preserve_internal_whitespace) (title='one  two')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp/baseline-run/test_app.py\", line 17, in test_preserve_internal_whitespace\n    self.assertEqual(normalize_title(\"  \" + title + \"  \"), title)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '  one  two  ' != 'one  two'\n-   one  two  \n? --        --\n+ one  two\n\n\n======================================================================\nFAIL: test_preserve_internal_whitespace (test_app.TestTitle.test_preserve_internal_whitespace) (title='one\\ttwo')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp/baseline-run/test_app.py\", line 17, in test_preserve_internal_whitespace\n    self.assertEqual(normalize_title(\"  \" + title + \"  \"), title)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '  one\\ttwo  ' != 'one\\ttwo'\n-   one\ttwo  \n? --   \t   --\n+ one\ttwo\n\n\n======================================================================\nFAIL: test_preserve_internal_whitespace (test_app.TestTitle.test_preserve_internal_whitespace) (title='one\\ntwo')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp/baseline-run/test_app.py\", line 17, in test_preserve_internal_whitespace\n    self.assertEqual(normalize_title(\"  \" + title + \"  \"), title)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '  one\\ntwo  ' != 'one\\ntwo'\n-   one\n? --\n+ one\n- two  \n?    --\n+ two\n\n\n======================================================================\nFAIL: test_reject_empty_title (test_app.TestTitle.test_reject_empty_title) (title='')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp/baseline-run/test_app.py\", line 22, in test_reject_empty_title\n    with self.assertRaises(ValueError) as caught:\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n======================================================================\nFAIL: test_reject_empty_title (test_app.TestTitle.test_reject_empty_title) (title='   ')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp/baseline-run/test_app.py\", line 22, in test_reject_empty_title\n    with self.assertRaises(ValueError) as caught:\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n======================================================================\nFAIL: test_reject_empty_title (test_app.TestTitle.test_reject_empty_title) (title='\\t\\n\\r')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp/baseline-run/test_app.py\", line 22, in test_reject_empty_title\n    with self.assertRaises(ValueError) as caught:\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n======================================================================\nFAIL: test_reject_empty_title (test_app.TestTitle.test_reject_empty_title) (title='\\u3000\\xa0')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp/baseline-run/test_app.py\", line 22, in test_reject_empty_title\n    with self.assertRaises(ValueError) as caught:\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n======================================================================\nFAIL: test_trim_boundaries (test_app.TestTitle.test_trim_boundaries) (title='  title  ')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp/baseline-run/test_app.py\", line 12, in test_trim_boundaries\n    self.assertEqual(normalize_title(title), \"title\")\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '  title  ' != 'title'\n-   title  \n? --     --\n+ title\n\n\n======================================================================\nFAIL: test_trim_boundaries (test_app.TestTitle.test_trim_boundaries) (title='\\t\\ntitle\\r\\n')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp/baseline-run/test_app.py\", line 12, in test_trim_boundaries\n    self.assertEqual(normalize_title(title), \"title\")\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '\\t\\ntitle\\r\\n' != 'title'\n- \t\n- title\n?      -\n+ title\n- \n\n\n======================================================================\nFAIL: test_trim_boundaries (test_app.TestTitle.test_trim_boundaries) (title='\\u3000title\\xa0')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp/baseline-run/test_app.py\", line 12, in test_trim_boundaries\n    self.assertEqual(normalize_title(title), \"title\")\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '\\u3000title\\xa0' != 'title'\n- 　title \n? -     -\n+ title\n\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=10)\n",
+    "plan_observed": true,
+    "plan_snapshots": 2
+  },
+  "plan-retest": {
+    "files": [
+      "AGENTS.md",
+      "app.py",
+      "docs/design.md",
+      "docs/handoff.md",
+      "docs/plans/normalize-title.md",
+      "requirements.md",
+      "test_app.py"
+    ],
+    "original_files_unchanged": true
+  }
+}

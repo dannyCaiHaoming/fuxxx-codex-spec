@@ -1,0 +1,13 @@
+{
+  "original_root": "/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-local-capabilities-5ylznewp",
+  "agents": [
+    "local_design",
+    "local_plan",
+    "local_complete",
+    "local_plan_retest"
+  ],
+  "contexts": "fork_turns:none; allowed only own fixture and local packages; external Skills disallowed by request, not OS-enforced",
+  "retest": "Fresh context; clarified evaluator simulates project main session. Same plan-only request and original fixture. No expected output given.",
+  "observations": "100ms changed-text sampling of design/plan/complete, started after dispatch before complete wrote documents; not full tool trace. Observer stopped.",
+  "snapshot_paths": "original absolute paths retained; use saved packages when temp paths no longer exist"
+}

@@ -1,0 +1,5 @@
+{
+  "design": "按 Skill 和 requirements 写总设计与当前 MVP 给我审阅，需求已明确，只设计不写 plan 或实施，不正式接入。",
+  "plan": "直接用 plan 能力，将 docs/design.md 转为可交接实施计划，复用 docs，只写计划不改代码。",
+  "complete": "按主 Skill 完成 requirements 的功能；记录必要设计与实施 plan，再实施验证收口，普通选择自行处理，不 commit/push。"
+}
