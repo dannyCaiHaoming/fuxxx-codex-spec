@@ -1,0 +1,14 @@
+{
+  "original_root": "/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-behavior-6be3o5in",
+  "agents": [
+    "temporary_use",
+    "adoption",
+    "adopt_continue",
+    "missing_entry",
+    "upstream_fix",
+    "bounded_mitigation"
+  ],
+  "context": "6 fresh fork_turns:none contexts, repeat adoption followup reuses adoption context",
+  "record_type": "fixture snapshots, request summaries, parent runtime outputs; not full tool traces",
+  "absolute_paths": "Original fixture paths retained verbatim. Use packages snapshot to inspect referenced skill after original temp path disappears."
+}

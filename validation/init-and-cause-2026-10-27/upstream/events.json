@@ -1,0 +1,17 @@
+[
+  {
+    "event_id": "e1",
+    "order_id": "o1",
+    "amount": 10
+  },
+  {
+    "event_id": "e1",
+    "order_id": "o1",
+    "amount": 10
+  },
+  {
+    "event_id": "e2",
+    "order_id": "o2",
+    "amount": 10
+  }
+]

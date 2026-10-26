@@ -4,7 +4,7 @@
 
 适用于前后端产品、Agent、内部工具和日常维护。尤其适合开发跨多个会话、需要子 Agent 协作，或者容易出现“修一个问题，顺手把整个架构做大”的项目。
 
-**当前提供一个 Skill 入口、两份参考和四份模板。** 方法以 Markdown 为主，没有额外 CLI、调度器或强制执行 Hook。它能约束 Agent 应如何决策，但不能保证模型永不漏读、误判或偏离目标。
+**当前提供一个日常主入口、一个独立接入 Skill、两份阶段参考和四份模板。** 方法以 Markdown 为主，没有额外 CLI、调度器或强制执行 Hook。它能约束 Agent 应如何决策，但不能保证模型永不漏读、误判或偏离目标。
 
 ## 为什么使用
 
@@ -33,7 +33,7 @@ Skill 入口是 [`fucxxx-codex-spec/SKILL.md`](fucxxx-codex-spec/SKILL.md)，同
 先检查已有规范与资料位置。只写当前 MVP 的设计和实施计划，给我审阅，先不要实施。
 ```
 
-这只是通过文件入口使用方法，不代表已安装或已验证自动发现。正式安装由所用宿主的 Skill 管理方式完成；只应安装包目录，不应把整个仓库及验证样例当作 Skill 安装。宿主已经发现该名称时，可以显式使用 `$fucxxx-codex-spec`。
+这只是通过文件入口使用方法，不代表已安装或已验证自动发现。正式安装由所用宿主的 Skill 管理方式完成；日常能力安装 `fucxxx-codex-spec/`；需要正式接入能力时，同时提供 `fucxxx-codex-spec-init/`。不要把整个仓库及验证样例当作 Skill 安装。两个目录无需固定相邻，但 Agent 必须能找到并读取实际入口。宿主已经发现该名称时，可以显式使用 `$fucxxx-codex-spec`。
 
 ### 2. 正式采用时接入项目 AGENTS.md
 
@@ -46,7 +46,9 @@ Skill 入口是 [`fucxxx-codex-spec/SKILL.md`](fucxxx-codex-spec/SKILL.md)，同
 这次只完成接入和当前 MVP 设计，不开始产品实施，不 commit 或 push。
 ```
 
-接入应把 Skill 的真实可读入口、项目资料根、读取和恢复要求合并进有效 AGENTS.md。使用[项目接入章节中的片段](fucxxx-codex-spec/references/collaboration-and-closeout.md#项目接入)，替换占位路径后再采用；无需把整份 Skill 复制进去。
+主入口会按需转到 `fucxxx-codex-spec-init`；也可以直接指定该 Skill 的真实路径开展接入。临时“按此方法做”不会自动修改 AGENTS.md，重复接入只补已有材料的缺口，不追加另一套文档。接入完成后按原授权返回主入口，用户不必手动串联各阶段。
+
+接入应把 Skill 的真实可读入口、项目资料根、读取和恢复要求合并进有效 AGENTS.md。使用[接入 Skill 中的片段](fucxxx-codex-spec-init/SKILL.md#项目接入)，替换占位路径后再采用；无需把整份 Skill 复制进去。
 
 三者分工：**AGENTS.md 声明何时使用和从哪里读取；Skill 提供方法；项目文档保存当前目标和实际状态。** 正式采用后，相关开发请求即使没有再次点名，也应经该入口分流。接入验收要观察新会话是否实际读取并正确执行，不能仅检查文件存在。
 
@@ -64,6 +66,8 @@ Skill 入口是 [`fucxxx-codex-spec/SKILL.md`](fucxxx-codex-spec/SKILL.md)，同
 如果希望委派，要明确授权和边界，例如：“使用内部子 Agent 验证和实施，主会话负责设计、复核及收口，不创建用户可见新聊天。”实际工具不可用时，Agent 应说明限制，不能假称已经派发或归档。
 
 ## 开发流程中何时介入
+
+正式接入是按需的一次性能力，不是每个开发请求的前置。设计（包括 brainstorm、总设计与 MVP 拆分）、计划、执行与复核仍由主入口按阶段读取现有参考，没有拆成一串必须依次调用的 Skill。
 
 触发后先判断当前请求和授权，不是每次都跑完整流程。已有有效资料直接复用；关键未知先调查或做有界验证；只有当前需要的文档才创建。
 
@@ -159,7 +163,7 @@ commit、push、发布分别服从用户授权；明确“不提交”时保留�
 | --- | --- | --- | --- |
 | 主要组织单位 | 总设计下的当前 MVP 与会话推进状态 | 变更 change 与系统行为规格 | feature 的需求、技术计划与任务 |
 | 典型材料 | 总／子 design、临时 plan、handoff | proposal、delta specs、design、tasks | constitution、spec、plan、tasks |
-| 使用入口 | 单 Skill，按请求读参考；项目 AGENTS.md 接入 | CLI 初始化及对应 Agent 命令／Skills | Specify CLI 初始化及一组流程命令／Skills |
+| 使用入口 | 日常主 Skill 按请求读参考，正式接入由独立 init Skill 负责 | CLI 初始化及对应 Agent 命令／Skills | Specify CLI 初始化及一组流程命令／Skills |
 | 典型推进 | 明确目标 → 必要设计与计划 → 执行复核 → 回写与收口 | propose → apply → 规格同步与 archive，可先 explore | specify → plan → tasks → implement → converge |
 | 本项目特别强调 | 用户授权依据、累计范围、主子写入归属、恢复停点 | 主规格与增量规格之间的变更表达和归档 | 需求、计划、任务之间的结构化衔接与一致性分析 |
 | 结束材料 | 有效结论回写后移除结束 plan，保留长期设计与证据 | 同步主规格并归档 change 目录 | converge 对照材料检查实现，发现缺口时追加任务 |
@@ -184,7 +188,9 @@ Spec Kit 的 `clarify`、`checklist`、`analyze` 提供澄清和质量检查，�
 
 已做隔离行为样例，覆盖连续推进、审阅停点、契约变更、共享目录归属、计划目标偏移、连续关联审查，以及两份文档同时被扩大后的纠正。保留了真实代码、测试输出与相关快照，见[验证记录](validation/skill-package-v0.4.md)。
 
-2026-10-27 补充的问题定位与作用点规则，目前仅完成文本一致性、链接和格式检查，尚未进行独立子会话行为验证；此前样例不能视为已验证这次新增规则。
+2026-10-27 的独立样例进一步覆盖了问题作用点：上游可控时修复重复接收，上游不可修改且目标允许止损时仅修正列表展示。父会话复跑了原始失败及修复后测试；这些小型本地样例不证明复杂因果诊断或长任务稳定性。
+
+接入拆分已用独立样例验证临时使用、正式接入、同会话重复接入、接入后继续设计并停在审阅点，以及主入口不可用时继续独立小任务。宿主自动发现、跨安装位置查找、跨会话重复接入及接入后完整开发仍未验证。具体输入、产物与限制见验证记录。
 
 这些是有限样例，不是长期稳定性证明。宿主自动发现／加载、真实上下文压缩和跨项目长期效果尚未完成验证。共享协作测试曾遇到子协调者没有派发工具，由上层代发后继续验证；不能据此宣称任意宿主都能自主调度和清理子会话。
 
@@ -192,6 +198,7 @@ Spec Kit 的 `clarify`、`checklist`、`analyze` 提供澄清和质量检查，�
 
 | 文件 | 用途 |
 | --- | --- |
+| [接入 Skill](fucxxx-codex-spec-init/SKILL.md) | 正式采用、AGENTS.md 合并、按需初始化与接入检查 |
 | [SKILL.md](fucxxx-codex-spec/SKILL.md) | Agent 入口、分流与关键边界 |
 | [设计与计划](fucxxx-codex-spec/references/design-and-plan.md) | MVP、未知验证、计划和范围依据 |
 | [协作与收口](fucxxx-codex-spec/references/collaboration-and-closeout.md) | 项目接入、恢复、主子协作、复核和提交范围 |

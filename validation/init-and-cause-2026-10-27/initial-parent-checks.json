@@ -1,0 +1,19 @@
+{
+  "temporary": {
+    "changed_files": [
+      "app.py"
+    ]
+  },
+  "adopt": {
+    "changed_files": [
+      "AGENTS.md",
+      "README.md"
+    ],
+    "repeat_identical": true
+  },
+  "missing": {
+    "changed_files": [
+      "app.py"
+    ]
+  }
+}

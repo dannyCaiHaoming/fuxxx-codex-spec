@@ -1,0 +1,12 @@
+{
+  "request_summaries": {
+    "temporary": "这次按 fucxxx-codex-spec 方法，把 app.py 的“任務清單”改为“任务清单”，验证返回值；只这次使用方法。",
+    "adopt": "让项目正式采用 fucxxx-codex-spec，docs/design.md 是权威总设计，复用 docs 资料根；只接入，不开始产品设计或实现。",
+    "adopt-repeat": "再次检查正式采用，同样复用 docs/design.md 和 docs，有必要就修复接入。",
+    "continue": "正式采用，完成接入，并依据 requirements.md 完成总设计和当前 MVP 子设计供审阅；不要实施或编写实施计划。",
+    "missing": "读取 available/fucxxx-codex-spec-init/SKILL.md 正式接入，同时修正文案并验证；available 是全部可用 Skill 来源，不得从其他路径补找。",
+    "upstream": "按主 Skill 分析修复订单重复，events.json 为输入、contract.md 为已确认要求；有人建议列表过滤，判断合适做法并完成必要设计、实施、验证及收口。",
+    "mitigation": "按主 Skill 解决今天列表重复显示，events.json 为输入、contract.md 为已确认要求；完成授权内必要设计、实施、验证及收口。"
+  },
+  "constraints": "独立 fork_turns:none 子会话；只写各自样例，读指定包；不读其他样例或真实仓库，不安装、commit、push 或再委派；采用案例的重复接入在同一子会话追加。非完整工具轨迹。"
+}

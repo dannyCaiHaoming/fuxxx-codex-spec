@@ -1,0 +1,12 @@
+{
+  "upstream": {
+    "stored_rows": 3,
+    "displayed_rows": 3,
+    "original_failure": "e1 appears twice"
+  },
+  "mitigation": {
+    "stored_rows": 3,
+    "displayed_rows": 3,
+    "original_failure": "e1 appears twice"
+  }
+}

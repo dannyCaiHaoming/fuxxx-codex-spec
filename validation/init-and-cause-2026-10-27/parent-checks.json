@@ -1,0 +1,78 @@
+{
+  "temporary": {
+    "changed_files": [
+      "app.py"
+    ]
+  },
+  "adopt": {
+    "changed_files": [
+      "AGENTS.md",
+      "README.md"
+    ],
+    "repeat_identical": true
+  },
+  "missing": {
+    "changed_files": [
+      "app.py"
+    ]
+  },
+  "continue": {
+    "changed_files": [
+      "AGENTS.md",
+      "fucxxx-codex-spec/design.md",
+      "fucxxx-codex-spec/designs/mvp-1.md",
+      "fucxxx-codex-spec/handoff.md"
+    ],
+    "no_plan_or_code_change": true
+  },
+  "upstream": {
+    "stored_after_first_batch": 2,
+    "displayed_after_first_batch": [
+      {
+        "event_id": "e1",
+        "order_id": "o1",
+        "amount": 10
+      },
+      {
+        "event_id": "e2",
+        "order_id": "o2",
+        "amount": 10
+      }
+    ],
+    "stored_after_replay": 2,
+    "unchanged_function": "list_orders",
+    "tests": "test_equal_amount_different_orders_are_preserved (test_orders.OrderReceiptTests.test_equal_amount_different_orders_are_preserved) ... ok\ntest_existing_event_is_not_inserted_again (test_orders.OrderReceiptTests.test_existing_event_is_not_inserted_again) ... ok\ntest_input_and_list_copy_behavior_is_preserved (test_orders.OrderReceiptTests.test_input_and_list_copy_behavior_is_preserved) ... ok\ntest_original_events_and_replay_keep_raw_and_list_unique (test_orders.OrderReceiptTests.test_original_events_and_replay_keep_raw_and_list_unique) ... ok\ntest_unknown_history_and_existing_duplicates_are_untouched (test_orders.OrderReceiptTests.test_unknown_history_and_existing_duplicates_are_untouched) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.000s\n\nOK\n",
+    "baseline_same_tests": "test_equal_amount_different_orders_are_preserved (test_orders.OrderReceiptTests.test_equal_amount_different_orders_are_preserved) ... ok\ntest_existing_event_is_not_inserted_again (test_orders.OrderReceiptTests.test_existing_event_is_not_inserted_again) ... FAIL\ntest_input_and_list_copy_behavior_is_preserved (test_orders.OrderReceiptTests.test_input_and_list_copy_behavior_is_preserved) ... ok\ntest_original_events_and_replay_keep_raw_and_list_unique (test_orders.OrderReceiptTests.test_original_events_and_replay_keep_raw_and_list_unique) ... FAIL\ntest_unknown_history_and_existing_duplicates_are_untouched (test_orders.OrderReceiptTests.test_unknown_history_and_existing_duplicates_are_untouched) ... FAIL\n\n======================================================================\nFAIL: test_existing_event_is_not_inserted_again (test_orders.OrderReceiptTests.test_existing_event_is_not_inserted_again)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-behavior-6be3o5in/baseline-run-upstream/test_orders.py\", line 35, in test_existing_event_is_not_inserted_again\n    self.assertEqual(store, [event])\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [{'ev[36 chars]ount': 10}, {'event_id': 'e1', 'order_id': 'o1', 'amount': 10}] != [{'ev[36 chars]ount': 10}]\n\nFirst list contains 1 additional elements.\nFirst extra element 1:\n{'event_id': 'e1', 'order_id': 'o1', 'amount': 10}\n\n- [{'amount': 10, 'event_id': 'e1', 'order_id': 'o1'},\n?                                                    ^\n\n+ [{'amount': 10, 'event_id': 'e1', 'order_id': 'o1'}]\n?                                                    ^\n\n-  {'amount': 10, 'event_id': 'e1', 'order_id': 'o1'}]\n\n======================================================================\nFAIL: test_original_events_and_replay_keep_raw_and_list_unique (test_orders.OrderReceiptTests.test_original_events_and_replay_keep_raw_and_list_unique)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-behavior-6be3o5in/baseline-run-upstream/test_orders.py\", line 15, in test_original_events_and_replay_keep_raw_and_list_unique\n    self.assertEqual(store, expected)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [{'ev[58 chars]': 'e1', 'order_id': 'o1', 'amount': 10}, {'ev[42 chars] 10}] != [{'ev[58 chars]': 'e2', 'order_id': 'o2', 'amount': 10}]\n\nFirst differing element 1:\n{'event_id': 'e1', 'order_id': 'o1', 'amount': 10}\n{'event_id': 'e2', 'order_id': 'o2', 'amount': 10}\n\nFirst list contains 1 additional elements.\nFirst extra element 2:\n{'event_id': 'e2', 'order_id': 'o2', 'amount': 10}\n\n  [{'amount': 10, 'event_id': 'e1', 'order_id': 'o1'},\n-  {'amount': 10, 'event_id': 'e1', 'order_id': 'o1'},\n   {'amount': 10, 'event_id': 'e2', 'order_id': 'o2'}]\n\n======================================================================\nFAIL: test_unknown_history_and_existing_duplicates_are_untouched (test_orders.OrderReceiptTests.test_unknown_history_and_existing_duplicates_are_untouched)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-behavior-6be3o5in/baseline-run-upstream/test_orders.py\", line 43, in test_unknown_history_and_existing_duplicates_are_untouched\n    self.assertEqual(store, before)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [{'or[164 chars]ount': 10}, {'event_id': 'e1', 'order_id': 'o1', 'amount': 10}] != [{'or[164 chars]ount': 10}]\n\nFirst list contains 1 additional elements.\nFirst extra element 4:\n{'event_id': 'e1', 'order_id': 'o1', 'amount': 10}\n\n  [{'amount': 10, 'order_id': 'legacy'},\n   {'amount': 10, 'order_id': 'legacy'},\n   {'amount': 10, 'event_id': 'e1', 'order_id': 'o1'},\n-  {'amount': 10, 'event_id': 'e1', 'order_id': 'o1'},\n   {'amount': 10, 'event_id': 'e1', 'order_id': 'o1'}]\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nFAILED (failures=3)\n",
+    "changed_files": [
+      "orders.py",
+      "repair-notes.md",
+      "test_orders.py"
+    ]
+  },
+  "mitigation": {
+    "stored_after_first_batch": 3,
+    "displayed_after_first_batch": [
+      {
+        "event_id": "e1",
+        "order_id": "o1",
+        "amount": 10
+      },
+      {
+        "event_id": "e2",
+        "order_id": "o2",
+        "amount": 10
+      }
+    ],
+    "stored_after_replay": 6,
+    "unchanged_function": "receive",
+    "tests": "test_distinct_events_with_equal_amount_and_nonadjacent_repeat (test_orders.ListMitigationTests.test_distinct_events_with_equal_amount_and_nonadjacent_repeat) ... ok\ntest_original_input_through_app_keeps_raw_export_source (test_orders.ListMitigationTests.test_original_input_through_app_keeps_raw_export_source) ... ok\ntest_unknown_history_is_preserved_and_empty_input_works (test_orders.ListMitigationTests.test_unknown_history_is_preserved_and_empty_input_works) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+    "baseline_same_tests": "test_distinct_events_with_equal_amount_and_nonadjacent_repeat (test_orders.ListMitigationTests.test_distinct_events_with_equal_amount_and_nonadjacent_repeat) ... FAIL\ntest_original_input_through_app_keeps_raw_export_source (test_orders.ListMitigationTests.test_original_input_through_app_keeps_raw_export_source) ... FAIL\ntest_unknown_history_is_preserved_and_empty_input_works (test_orders.ListMitigationTests.test_unknown_history_is_preserved_and_empty_input_works) ... ok\n\n======================================================================\nFAIL: test_distinct_events_with_equal_amount_and_nonadjacent_repeat (test_orders.ListMitigationTests.test_distinct_events_with_equal_amount_and_nonadjacent_repeat)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-behavior-6be3o5in/baseline-run-mitigation/test_orders.py\", line 25, in test_distinct_events_with_equal_amount_and_nonadjacent_repeat\n    self.assertEqual(list_orders(store), [first, second])\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [{'ev[85 chars]mount': 10}, {'event_id': 'a', 'order_id': 'o1', 'amount': 10}] != [{'ev[85 chars]mount': 10}]\n\nFirst list contains 1 additional elements.\nFirst extra element 2:\n{'event_id': 'a', 'order_id': 'o1', 'amount': 10}\n\n  [{'amount': 10, 'event_id': 'a', 'order_id': 'o1'},\n-  {'amount': 10, 'event_id': 'b', 'order_id': 'o2'},\n?                                                   ^\n\n+  {'amount': 10, 'event_id': 'b', 'order_id': 'o2'}]\n?                                                   ^\n\n-  {'amount': 10, 'event_id': 'a', 'order_id': 'o1'}]\n\n======================================================================\nFAIL: test_original_input_through_app_keeps_raw_export_source (test_orders.ListMitigationTests.test_original_input_through_app_keeps_raw_export_source)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-behavior-6be3o5in/baseline-run-mitigation/test_orders.py\", line 16, in test_original_input_through_app_keeps_raw_export_source\n    self.assertEqual(list_orders(store), [events[0], events[2]])\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: [{'ev[58 chars]': 'e1', 'order_id': 'o1', 'amount': 10}, {'ev[42 chars] 10}] != [{'ev[58 chars]': 'e2', 'order_id': 'o2', 'amount': 10}]\n\nFirst differing element 1:\n{'event_id': 'e1', 'order_id': 'o1', 'amount': 10}\n{'event_id': 'e2', 'order_id': 'o2', 'amount': 10}\n\nFirst list contains 1 additional elements.\nFirst extra element 2:\n{'event_id': 'e2', 'order_id': 'o2', 'amount': 10}\n\n  [{'amount': 10, 'event_id': 'e1', 'order_id': 'o1'},\n-  {'amount': 10, 'event_id': 'e1', 'order_id': 'o1'},\n   {'amount': 10, 'event_id': 'e2', 'order_id': 'o2'}]\n\n----------------------------------------------------------------------\nRan 3 tests in 0.002s\n\nFAILED (failures=2)\n",
+    "changed_files": [
+      "RESULT.md",
+      "orders.py",
+      "test_orders.py"
+    ]
+  },
+  "package_unchanged": true,
+  "fixture_links_checked": 14
+}
