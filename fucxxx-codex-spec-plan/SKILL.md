@@ -9,7 +9,7 @@ description: 将 fucxxx-codex-spec 当前 MVP 的已定设计转为可交接的�
 
 ## 读取与进入条件
 
-实际读取主 Skill `fucxxx-codex-spec`、其 `references/design-and-plan.md` 及项目当前设计、已有活动 plan。优先读取宿主提供的入口；仓库并列布局可读 `../fucxxx-codex-spec/SKILL.md`，安装后不假定此布局。缺少主入口时报告缺口，继续可做的只读分析，不自动安装或虚构已加载。读取共同约束后直接执行本能力，不循环派回自身。
+实际读取主 Skill `fucxxx-codex-spec`、其 `references/design-and-plan.md` 及项目当前设计、已有活动 plan。查找顺序与主入口一致：先用有效 AGENTS.md 登记的 Skill 包根或主入口，再用宿主提供的入口，最后才是未安装的仓库并列布局 `../fucxxx-codex-spec/SKILL.md`；安装后不假定此布局。缺少主入口时报告缺口，继续可做的只读分析，不自动安装或虚构已加载。读取共同约束后直接执行本能力，不循环派回自身。
 
 只读审阅不修改文件；小改动可直接走主入口轻量路径。实施 plan 只承接已定且获授权部分。发现关键契约缺口时指出证据与影响，回设计处理；重要未知可形成验证 plan，不能偷偷选择产品行为来把任务填满。已经明确的需求不重新 brainstorm。
 
