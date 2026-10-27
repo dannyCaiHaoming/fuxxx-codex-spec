@@ -71,6 +71,8 @@ description: 用于用户要求采用 fucxxx-codex-spec，或在已采用该范�
 | `handoff.md` | 主会话维护的当前焦点、活动工作、阻塞和下一步。 |
 | 已有证据位置或 `evidence/` | 支撑结论的必要记录；复用既有测试／CI／报告，只保存定位问题所需的部分。 |
 
+文件名默认用能力短名：子设计 `designs/<短名>.md`，计划 `plans/<短名>-<用途>.md`（同一 MVP 同时有验证和实施计划时用途加以区分，例如 `export-check`、`export-impl`），证据 `evidence/<短名>-<主题>.md`。MVP 编号只写在文档标题里，不进文件名，重新排序时链接不会失效。项目已有命名约定时沿用。
+
 模板按需使用：[总设计](assets/master-design.template.md)、[MVP 子设计](assets/mvp-design.template.md)、[Plan](assets/plan.template.md)、[Handoff](assets/handoff.template.md)。它们是按需裁剪的内容契约：替换占位内容与路径，保留当前目标、范围、验收和证据边界。
 
 ## 方法要点
