@@ -69,7 +69,7 @@ Skill 入口是 [`fucxxx-codex-spec/SKILL.md`](fucxxx-codex-spec/SKILL.md)，同
 
 ## 开发流程中何时介入
 
-正式接入是按需的一次性能力，不是每个开发请求的前置。主入口按需读取设计能力（需求澄清、总设计与 MVP）和计划能力，执行与复核仍使用现有协作参考。已有设计不重新澄清，已有活动 plan 直接恢复执行，小修改跳过阶段能力；不是必须逐项调用的命令链。
+正式接入是按需的一次性能力，不是每个开发请求的前置。主入口按需读取设计能力（需求澄清、总设计与 MVP）和计划能力，执行与复核使用主包的执行参考和收口参考。已有设计不重新澄清，已有活动 plan 直接恢复执行，小修改跳过阶段能力；不是必须逐项调用的命令链。
 
 触发后先判断当前请求和授权，不是每次都跑完整流程。已有有效资料直接复用；关键未知先调查或做有界验证；只有当前需要的文档才创建。
 
@@ -165,7 +165,7 @@ commit、push、发布分别服从用户授权；明确“不提交”时保留�
 | --- | --- | --- | --- |
 | 主要组织单位 | 总设计下的当前 MVP 与会话推进状态 | 变更 change 与系统行为规格 | feature 的需求、技术计划与任务 |
 | 典型材料 | 总／子 design、临时 plan、handoff | proposal、delta specs、design、tasks | constitution、spec、plan、tasks |
-| 使用入口 | 日常主 Skill 路由到本地 init／design／plan，执行仍用协作参考 | CLI 初始化及对应 Agent 命令／Skills | Specify CLI 初始化及一组流程命令／Skills |
+| 使用入口 | 日常主 Skill 路由到本地 init／design／plan，执行与收口用两份参考 | CLI 初始化及对应 Agent 命令／Skills | Specify CLI 初始化及一组流程命令／Skills |
 | 典型推进 | 明确目标 → 必要设计与计划 → 执行复核 → 回写与收口 | propose → apply → 规格同步与 archive，可先 explore | specify → plan → tasks → implement → converge |
 | 本项目特别强调 | 用户授权依据、累计范围、主子写入归属、恢复停点 | 主规格与增量规格之间的变更表达和归档 | 需求、计划、任务之间的结构化衔接与一致性分析 |
 | 结束材料 | 有效结论回写后移除结束 plan，保留长期设计与证据 | 同步主规格并归档 change 目录 | converge 对照材料检查实现，发现缺口时追加任务 |
@@ -192,7 +192,7 @@ Spec Kit 的 `clarify`、`checklist`、`analyze` 提供澄清和质量检查，�
 
 这两项能力依据本地 Superpowers **7.0.0 内容快照**适配，不要求安装外部 Superpowers。原始文件、哈希和[适配说明](vendor/superpowers-7.0.0/ADAPTATION.md)保存在 `vendor/`，仅供溯源，不能作为另一套流程加载；版本来自本地元数据，未核实上游 commit。安装只提供上述四个包，不安装 vendor 或验证样例。主包与两个改编能力随包保留原 MIT 许可。
 
-保留需求澄清与可执行计划的方法，但不迁入固定提问轮次、逐任务 commit、固定五项风险、外部视觉服务器或执行账本。执行、调试、复核和收口的方法也已按以下顺序适配进现有协作参考，未搬入完整调度框架或脚本。升级需人工比较来源与行为验证，不自动跟随上游。
+保留需求澄清与可执行计划的方法，但不迁入固定提问轮次、逐任务 commit、固定五项风险、外部视觉服务器或执行账本。执行、调试、复核和收口的方法也已按以下顺序适配进主包的执行参考与收口参考，未搬入完整调度框架或脚本。升级需人工比较来源与行为验证，不自动跟随上游。
 
 | 环节 | 具体方法 |
 | --- | --- |
@@ -228,7 +228,8 @@ Spec Kit 的 `clarify`、`checklist`、`analyze` 提供澄清和质量检查，�
 | [接入 Skill](fucxxx-codex-spec-init/SKILL.md) | 正式采用、AGENTS.md 合并、按需初始化与接入检查 |
 | [SKILL.md](fucxxx-codex-spec/SKILL.md) | Agent 入口、分流与共同底线（各能力按条目名引用） |
 | [设计与计划](fucxxx-codex-spec/references/design-and-plan.md) | MVP、未知验证、计划和范围依据 |
-| [协作与收口](fucxxx-codex-spec/references/collaboration-and-closeout.md) | 项目接入、恢复、主子协作、复核和提交范围 |
+| [执行与恢复](fucxxx-codex-spec/references/execution.md) | 项目接入路由、恢复、主子协作与执行 |
+| [复核与收口](fucxxx-codex-spec/references/closeout.md) | 复核返工、回写收口、提交范围与方法来源 |
 | [总设计模板](fucxxx-codex-spec/assets/master-design.template.md) | 整体目标与 MVP 关系 |
 | [MVP 模板](fucxxx-codex-spec/assets/mvp-design.template.md) | 当前交付、接口、验收及结论 |
 | [Plan 模板](fucxxx-codex-spec/assets/plan.template.md) | 验证／实施安排和执行结果 |

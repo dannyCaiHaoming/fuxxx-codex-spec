@@ -12,7 +12,7 @@
 
 共同权威：主 Skill 决定分流、授权和交付边界；主包 design-and-plan.md 维护问题定位和范围约束；设计／计划能力维护阶段操作；项目 design／plan／handoff 是唯一动态状态。模板仍由主包维护，不复制到子能力。
 
-发行时提供主包、init、design、plan 四个目录，design／plan 各自附 LICENSE.superpowers；本目录原版内容不随日常加载。设计与计划只依赖本地主包，不依赖外部 Superpowers 安装。执行、调试、复核和收口方法已适配到主包协作参考；不迁入完整执行编排或脚本，主包亦附 LICENSE.superpowers。
+发行时提供主包、init、design、plan 四个目录，design／plan 各自附 LICENSE.superpowers；本目录原版内容不随日常加载。设计与计划只依赖本地主包，不依赖外部 Superpowers 安装。执行、调试、复核和收口方法已适配到主包的执行参考（references/execution.md）与收口参考（references/closeout.md）；不迁入完整执行编排或脚本，主包亦附 LICENSE.superpowers。
 
 升级只在明确任务中人工比较选定源文件，记录新哈希和适配差异、复跑受影响行为；不自动拉取或跟随上游。源码快照不能与适配规则同时作为行为权威。
 
