@@ -50,7 +50,7 @@ Skill 入口是 [`fucxxx-codex-spec/SKILL.md`](fucxxx-codex-spec/SKILL.md)，同
 
 接入应把 Skill 的真实可读入口、包根与阶段能力入口、项目资料根、读取和恢复要求合并进有效 AGENTS.md。使用[接入 Skill 中的片段](fucxxx-codex-spec-init/SKILL.md#项目接入)，替换占位路径后再采用；无需把整份 Skill 复制进去。
 
-主入口会按需读取 init／design／plan，而安装后它们未必与主入口相邻。查找顺序固定为：AGENTS.md 登记的包根或具体入口 → 宿主提供的入口／名称 → 未安装时的仓库并列布局。所以**正式接入时要登记一个可解析的包根，或逐项登记各能力的实际位置**；只能核实主入口时照实只登记主入口并说明缺口，不填推测路径。本次核实的入口随 handoff 保存，换会话按登记恢复，不重新搜索。
+主入口会按需读取 init／design／plan，它们未必与主入口装在一处。查找顺序固定为：AGENTS.md 登记的包根或具体入口 → 宿主提供的入口／名称 → 并列布局。并列布局指四个目录同在一处，例如本仓库内，或一同装进宿主的同一 skills 目录（Codex 的 `~/.codex/skills/` 即如此）；分开安装时不成立。所以**正式接入时要登记一个可解析的包根，或逐项登记各能力的实际位置**；只能核实主入口时照实只登记主入口并说明缺口，路径只填核实过的值。本次核实的入口随 handoff 保存，换会话按登记恢复。
 
 三者分工：**AGENTS.md 声明何时使用和从哪里读取；Skill 提供方法；项目文档保存当前目标和实际状态。** 正式采用后，相关开发请求即使没有再次点名，也应经该入口分流。接入验收要观察新会话是否实际读取并正确执行，不能仅检查文件存在。
 
@@ -215,6 +215,8 @@ Spec Kit 的 `clarify`、`checklist`、`analyze` 提供澄清和质量检查，�
 
 2026-10-28 补入的包根／阶段能力入口登记与固定查找顺序，只做了链接、围栏、YAML、空白和表述一致性的静态检查，未运行新的行为样例；「装到非相邻位置后能否按登记解析到四个能力」仍未获行为证据。
 
+同日把散在六份文件中的共同底线收敛到主入口「共同底线」一节，其余文件改为按条目名引用，并把关键处的否定句改为正向指令。这次改写触及全部六份规则文件，同样只有静态检查与逐句覆盖核对；**此前各轮的行为样例只证明它们各自记录的旧版本**，不能直接视为本版本的行为证据。
+
 这些是有限样例，不是长期稳定性证明。宿主自动发现／加载、真实上下文压缩和跨项目长期效果尚未完成验证。共享协作测试曾遇到子协调者没有派发工具，由上层代发后继续验证；不能据此宣称任意宿主都能自主调度和清理子会话。
 
 ## 仓库导航
@@ -224,7 +226,7 @@ Spec Kit 的 `clarify`、`checklist`、`analyze` 提供澄清和质量检查，�
 | [设计 Skill](fucxxx-codex-spec-design/SKILL.md) | 澄清、方案选择、总设计与 MVP、实施者视角检查 |
 | [计划 Skill](fucxxx-codex-spec-plan/SKILL.md) | 可交接任务、接口与验收自查 |
 | [接入 Skill](fucxxx-codex-spec-init/SKILL.md) | 正式采用、AGENTS.md 合并、按需初始化与接入检查 |
-| [SKILL.md](fucxxx-codex-spec/SKILL.md) | Agent 入口、分流与关键边界 |
+| [SKILL.md](fucxxx-codex-spec/SKILL.md) | Agent 入口、分流与共同底线（各能力按条目名引用） |
 | [设计与计划](fucxxx-codex-spec/references/design-and-plan.md) | MVP、未知验证、计划和范围依据 |
 | [协作与收口](fucxxx-codex-spec/references/collaboration-and-closeout.md) | 项目接入、恢复、主子协作、复核和提交范围 |
 | [总设计模板](fucxxx-codex-spec/assets/master-design.template.md) | 整体目标与 MVP 关系 |
