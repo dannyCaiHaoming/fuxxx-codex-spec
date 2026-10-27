@@ -233,5 +233,14 @@ Spec Kit 的 `clarify`、`checklist`、`analyze` 提供澄清和质量检查，�
 | [Handoff 模板](fucxxx-codex-spec/assets/handoff.template.md) | 当前状态与恢复入口 |
 | [v0.4 设计草稿](fucxxx-codex-spec-skill-design-draft.md) | 历史设计依据；后续规则以当前 Skill 包为准 |
 | [验证记录](validation/skill-package-v0.4.md) | 各版本的样例结果、证据和未验证范围 |
+| [结构检查脚本](tools/check-package.py) | 包结构、YAML、围栏、链接、空白、vendor 哈希与包清单 SHA-256 |
+
+`tools/` 是仓库维护工具，不随 Skill 安装。每轮修改规则后跑一次结构检查：
+
+```bash
+python3 -I tools/check-package.py --expect-manifest <上一轮哈希>
+```
+
+`--scope repo` 连带检查草稿与验证样例，`--write-manifest <路径>` 生成逐文件清单，`--json` 便于存入验证证据。它只做静态检查，不能替代行为样例。
 
 `validation/` 中的 AGENTS.md、代码和项目文档是测试样例，不是本仓库的开发入口或需要安装的组成部分。
