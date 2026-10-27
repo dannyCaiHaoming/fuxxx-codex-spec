@@ -1,0 +1,7 @@
+{
+  "original_root": "/var/folders/tn/x1hbkfy17sx0w1lb8kjzzr340000gn/T/fucxxx-execution-n2d8jdpp",
+  "execution": "模拟主会话，从 handoff 恢复，完成现有标签解析 MVP，参考计划与审查材料，普通范围内纠错，验证回写收口，不扩大功能。",
+  "review": "独立新主会话只读恢复复核，读完整差量、证据与停点，检查是否有阻塞；可用不落盘 Python 验证。",
+  "isolation": "两个 fork_turns:none 上下文；仅样例和本地包，无安装/commit/push/再委派；读取隔离为任务约束，非OS强制。",
+  "observations": "100ms 文件内容变化采样；非完整工具轨迹。原始绝对路径保留，临时路径失效可对照保存包。"
+}

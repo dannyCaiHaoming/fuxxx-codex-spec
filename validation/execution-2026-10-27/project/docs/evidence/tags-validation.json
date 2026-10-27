@@ -1,0 +1,30 @@
+{
+  "environment": {
+    "python": "3.13.10 (v3.13.10:4fd884356d7, Dec  2 2025, 09:31:05) [Clang 16.0.0 (clang-1600.0.26.6)]",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O"
+  },
+  "baseline": "tags-baseline.json",
+  "old_implementation_result": "New tests failed: 4 test methods, 5 assertion failures including original input; existing single-tag test passed.",
+  "command": "python3 -B -m unittest -v",
+  "exit_code": 0,
+  "output": "test_empty_items (test_app.Tags.test_empty_items) ... ok\ntest_original_input_preserves_order_and_duplicates (test_app.Tags.test_original_input_preserves_order_and_duplicates) ... ok\ntest_single (test_app.Tags.test_single) ... ok\ntest_trim_without_changing_content (test_app.Tags.test_trim_without_changing_content) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+  "direct_call": {
+    "input": " b, a, b, ,",
+    "expected": [
+      "b",
+      "a",
+      "b"
+    ],
+    "actual": [
+      "b",
+      "a",
+      "b"
+    ],
+    "passed": true
+  },
+  "sha256": {
+    "app.py": "6ec1531c957bc60c8da47d4c64708ba3dab4164dac99d445d2662c537d95ca5d",
+    "test_app.py": "bf4122dd0cb3448e1a20c88cd40fa7d6b2d964766a19dff096fdb3e6e32b8470"
+  },
+  "review": "Self-review against requirements.md; no independent review, no external dependencies or model calls."
+}

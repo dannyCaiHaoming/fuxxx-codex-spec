@@ -1,0 +1,14 @@
+{
+  "app.py": {
+    "sha256": "fc39366797d97331fffc89d1aca597071551a26316990b709c966492be8b7ba5",
+    "content": "def parse_tags(text):\n    return text.split(\";\")\n"
+  },
+  "test_app.py": {
+    "sha256": "308061753eab1239be69f16e8ab2ef5313720b8b1422c1875e5fddfec4f37452",
+    "content": "import unittest\nfrom app import parse_tags\nclass Tags(unittest.TestCase):\n    def test_single(self):\n        self.assertEqual(parse_tags(\"a\"), [\"a\"])\n"
+  },
+  "docs/plans/tags.md": {
+    "sha256": "a077b575e3cf0c5051caa6397a6b95737cda225ee583de7d966d0e7d5ac1d3b7",
+    "content": "# 当前实施 plan\n依据 docs/designs/tags.md，基线未实施，核心目标标签解析。\n1. 在 app.py split 逗号并 trim 去空项。\n2. 使用 sorted(set(...)) 输出标签，保证稳定顺序。\n3. test_app.py 断言 \" b, a, b, ,\" 返回 [\"a\", \"b\"]，跑 python3 -B -m unittest -v。\n4. 验收后回写并收口。\n"
+  }
+}

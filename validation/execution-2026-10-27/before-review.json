@@ -1,0 +1,12 @@
+{
+  "requirements.md": "004d2b0e354d54352ca5ea04001d82ffe9710c521853804d43bacddcfed8bf3e",
+  "app.py": "6ec1531c957bc60c8da47d4c64708ba3dab4164dac99d445d2662c537d95ca5d",
+  "review-note.md": "49464bf334aaa90ca88f3eae7527895618b82b2f80a698142797925df91546e4",
+  "AGENTS.md": "fcc1ea6f8207a6e8a01db29cc1fc316f653ab8041dfb69c4636c66385f639766",
+  "test_app.py": "bf4122dd0cb3448e1a20c88cd40fa7d6b2d964766a19dff096fdb3e6e32b8470",
+  "docs/design.md": "11ae34018339f2b425d6c901f34262334004b94dfae2b61cb08f02cefb811f1b",
+  "docs/handoff.md": "c8eaf4a0020496dc9e927911bab55244ef870a4363f5ce128e1c171e83cd16d0",
+  "docs/designs/tags.md": "719ab2c8126efd1f1c8161484ce0e213d92b182b864d8d7a0120451a7b6e8603",
+  "docs/evidence/tags-baseline.json": "4a9753b498ca4e82aa52c37fae7649b41195c23ef8d11685c2b1c96dc2f437ea",
+  "docs/evidence/tags-validation.json": "76d5b196e25aab8ec28d11285061bbd42ba80c61a59f4300e12b3ec8004799e9"
+}
