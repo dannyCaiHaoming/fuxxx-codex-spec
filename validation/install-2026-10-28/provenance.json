@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-28",
+  "package_manifest_sha256": "417c6bcc4eeba56bbf4d8e1e39b7171f07aa83a0659c39ff5612ad2683042d25",
+  "package_commit": "ab8c7c6",
+  "hosts": {
+    "codex": {
+      "version": "codex-cli 0.163.0",
+      "model": "gpt-6-astra",
+      "install": "~/.codex/skills (tools/install.py --host codex, copy)"
+    },
+    "claude": {
+      "version": "2.1.302 (Claude Code)",
+      "model": "account default (not captured)",
+      "install": "~/.claude/skills (tools/install.py --host claude, copy)"
+    },
+    "opencode": {
+      "version": "1.19.3",
+      "model": "glm-5.2 (from run trace, user default)",
+      "install": "none of its own; auto-loads ~/.claude/skills"
+    }
+  },
+  "global_instruction_files": {
+    "~/.codex/AGENTS.md": "present, 4602 bytes (loaded by Codex probes)",
+    "~/.codex/AGENTS.override.md": "absent",
+    "~/.claude/CLAUDE.md": "absent",
+    "~/.config/opencode/AGENTS.md": "absent",
+    "~/.agents/AGENTS.md": "absent"
+  },
+  "other_skills_visible": "OpenCode also loads upstream obra/superpowers via plugin (brainstorming, writing-plans, ...); Claude Code session had openspec skills",
+  "isolation": "every probe ran in a fresh temp project outside the repo; each run checked project files before/after",
+  "harness_error": "first two opencode runs inherited PWD=/tmp and ran outside the project; superseded by *-rerun files (--dir + PWD)"
+}

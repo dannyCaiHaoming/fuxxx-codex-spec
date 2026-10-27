@@ -1,0 +1,19 @@
+{
+  "exit": 0,
+  "tool_calls": [
+    {
+      "tool": "Read",
+      "input": {
+        "file_path": "<T>/pkgs/main/fucxxx-codex-spec/SKILL.md"
+      }
+    },
+    {
+      "tool": "Read",
+      "input": {
+        "file_path": "<T>/pkgs/stages/fucxxx-codex-spec-design/SKILL.md"
+      }
+    }
+  ],
+  "final": "<T>/pkgs/main/fucxxx-codex-spec/SKILL.md\n<T>/pkgs/stages/fucxxx-codex-spec-design/SKILL.md\n1",
+  "read_agents_md_explicitly": false
+}

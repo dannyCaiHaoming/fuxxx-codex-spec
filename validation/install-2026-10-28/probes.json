@@ -1,0 +1,51 @@
+{
+  "prompt": "使用 fucxxx-codex-spec 技能处理这个问题：实际读取它的主入口 SKILL.md，再按其中「能力读取」找到 design 能力并实际读取。只回答三行：第一行是主入口 SKILL.md 的绝对路径；第二行是 design 能力 SKILL.md 的绝对路径；第三行是你按「能力读取」第几级找到 design 能力的（1、2 或 3）。不要创建或修改任何文件。",
+  "runs": {
+    "codex": {
+      "cmd": [
+        "codex",
+        "exec",
+        "--skip-git-repo-check",
+        "--ephemeral",
+        "-s",
+        "read-only",
+        "-C",
+        "<tmp>",
+        "<prompt>"
+      ],
+      "cwd": "<empty temp dir outside repo>",
+      "exit": 0,
+      "seconds": 32.4,
+      "files_changed_in_project": []
+    },
+    "claude": {
+      "cmd": [
+        "claude",
+        "-p",
+        "<prompt>",
+        "--output-format",
+        "text",
+        "--allowedTools",
+        "Read",
+        "Glob",
+        "Grep",
+        "Skill"
+      ],
+      "cwd": "<empty temp dir outside repo>",
+      "exit": 0,
+      "seconds": 18.2,
+      "files_changed_in_project": []
+    },
+    "opencode": {
+      "cmd": [
+        "opencode",
+        "run",
+        "<prompt>"
+      ],
+      "cwd": "<empty temp dir outside repo>",
+      "exit": 0,
+      "seconds": 49.2,
+      "files_changed_in_project": []
+    }
+  }
+}

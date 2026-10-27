@@ -1,0 +1,18 @@
+{
+  "why": "first opencode runs inherited PWD=/tmp from the launcher and ignored the subprocess cwd; reruns pass --dir and PWD",
+  "runs": {
+    "level2": {
+      "exit": 0,
+      "seconds": 44.5,
+      "files_changed_in_project": []
+    },
+    "level1": {
+      "exit": 0,
+      "seconds": 29.1,
+      "files_changed_in_project": [],
+      "registered_main": false,
+      "registered_design": false,
+      "global_copy_read": false
+    }
+  }
+}

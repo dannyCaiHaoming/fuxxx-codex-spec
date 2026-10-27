@@ -1,0 +1,30 @@
+{
+  "prompt": "这个项目已经按项目指令采用 fucxxx-codex-spec。请按项目指令找到并实际读取它的主入口 SKILL.md，再按其中「能力读取」找到 design 能力并实际读取。只回答三行：第一行是主入口 SKILL.md 的绝对路径；第二行是 design 能力 SKILL.md 的绝对路径；第三行是你按「能力读取」第几级找到 design 能力的（1、2 或 3）。不要创建或修改任何文件。",
+  "layout": "main pkg in <T>/pkgs/main/, stage pkgs in <T>/pkgs/stages/ (not adjacent); project <T>/project has only AGENTS.md + README.md",
+  "runs": {
+    "codex": {
+      "exit": 0,
+      "seconds": 35.6,
+      "files_changed_in_project": [],
+      "registered_main": true,
+      "registered_design": true,
+      "global_copy_used": false
+    },
+    "claude": {
+      "exit": 0,
+      "seconds": 18.5,
+      "files_changed_in_project": [],
+      "registered_main": true,
+      "registered_design": true,
+      "global_copy_used": false
+    },
+    "opencode": {
+      "exit": 0,
+      "seconds": 55.9,
+      "files_changed_in_project": [],
+      "registered_main": false,
+      "registered_design": false,
+      "global_copy_used": false
+    }
+  }
+}

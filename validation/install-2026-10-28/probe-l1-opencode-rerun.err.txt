@@ -1,0 +1,6 @@
+[0m
+> build · glm-5.2
+[0m
+[93m[1m! [0mpermission requested: external_directory (<T>/pkgs/main/fucxxx-codex-spec/*); auto-rejecting
+[0m✗ [0mRead <T>/pkgs/main/fucxxx-codex-spec/SKILL.md failed
+[91m[1mError: [0mThe user rejected permission to use this specific tool call.

@@ -1,0 +1,5 @@
+我将直接读取 `fucxxx-codex-spec` 的主入口 `SKILL.md`。
+Now let me follow the "能力读取" process to find the design capability. Level 1 checks effective AGENTS.md — none applies here (working dir is `/private/tmp`, not a project with AGENTS.md). Level 2 is "宿主提供的可读取入口或已发现的能力名称" — the host's available_skills list provides `fucxxx-codex-spec-design` with its location. Let me actually read it.
+/Users/caihaoming/.claude/skills/fucxxx-codex-spec/SKILL.md
+/Users/caihaoming/.claude/skills/fucxxx-codex-spec-design/SKILL.md
+2

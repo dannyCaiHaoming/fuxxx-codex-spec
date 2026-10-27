@@ -22,9 +22,10 @@
 | 10-28 | design 能力的具体例子 | `664ab63` | `ad68f7adec65` | 无 |
 | 10-28 | 本索引（包未变） | `9f95740` | `ad68f7adec65` | 无 |
 | 10-28 | 协作参考拆成执行、收口两份 | `d49a1a9` | `67e466bda874` | 无，静态检查 + 纯搬移核对 |
-| 10-28 | 资料文件命名软默认 | 下一轮回填 | `417c6bcc4eeb` | 无 |
+| 10-28 | 资料文件命名软默认 | `ab8c7c6` | `417c6bcc4eeb` | 无 |
+| 10-28 | 安装脚本与三宿主实测（包未变） | 下一轮回填 | `417c6bcc4eeb` | 有，仅入口发现与能力查找：Codex、Claude Code、OpenCode 各一例 |
 
-**最近一次有行为验证的包版本是 `168187f`（`b7970ec44b35`）。** 此后包内容又变了五次（`ee4f7a93`、`d9298c1d`、`ad68f7ad`、`67e466bd`、`417c6bcc`），都只有静态检查。其中共同底线收敛改写了全部六份规则文件，是最需要补行为样例的一版。
+**最近一次覆盖方法行为（设计、计划、执行、收口）的包版本是 `168187f`（`b7970ec44b35`）。** 此后包内容又变了五次（`ee4f7a93`、`d9298c1d`、`ad68f7ad`、`67e466bd`、`417c6bcc`），其中当前版本 `417c6bcc` 只补了入口发现与能力查找的行为证据；设计、计划、执行、收口等方法行为在这五次改动后都没有重新验证。共同底线收敛改写了全部六份规则文件，是最需要补方法行为样例的一版。
 
 ## 2026-10-24：初版包
 
@@ -341,3 +342,32 @@
 这是软默认而不是规则：恢复时真正依赖的是 plan 模板中“依据：<子 design 路径>”这类显式链接，不是文件名。模板未改。
 
 包清单 SHA-256：`417c6bcc4eeba56bbf4d8e1e39b7171f07aa83a0659c39ff5612ad2683042d25`，检查 7 项通过。只做了静态检查。未 push。
+
+## 2026-10-28：安装脚本与三宿主实测
+
+此前仓库没有安装方式，只说“由宿主的 Skill 管理方式完成”；入口登记（A）也一直缺行为证据。本轮在本机三个宿主上落地并实测。包内容未变，测试对象为 `417c6bcc4eeba56bbf4d8e1e39b7171f07aa83a0659c39ff5612ad2683042d25`（commit `ab8c7c6`）。
+
+**各宿主的发现位置**取自本机证据，而非记忆：Codex 来自内建 skill-installer 与 skill-creator 文档（`${CODEX_HOME:-~/.codex}/skills`）；OpenCode 来自其内建 customize-opencode skill 和 `opencode debug skill` 的实际输出（项目级 `.opencode/skill(s)/`，全局 `~/.config/opencode/skill(s)/`，并自动加载 `~/.claude/skills/` 与 `~/.agents/skills/`）；Claude Code 为 `~/.claude/skills/` 与项目级 `.claude/skills/`。Codex 的项目级目录没有本地文档可证，脚本暂不支持。
+
+**安装脚本** [tools/install.py](../tools/install.py)：只复制四个能力目录，装进同一个 skills 目录，因此并列布局在安装后同样成立。装完按包清单核对副本，并打印 AGENTS.md 登记值。同名目录不属于本包时拒绝覆盖；已装其他版本时需加 `--force`，旧版备份到 skills 目录之外，因为 OpenCode 会递归扫描 `**/SKILL.md`。脚本拒绝同时对 claude 与 opencode 做用户级安装，以免 OpenCode 发现两份同名 skill。另支持 `--project`、`--dest`、`--link`、`--uninstall`、`--dry-run`。在临时 HOME 中测试了 11 种情形：首次安装、同版本重装、外来同名目录、改动后无 `--force` 与有 `--force`（备份含被改内容）、链接模式、链接改复制、dry-run、claude+opencode 冲突、Codex 项目级、OpenCode 项目级、两种卸载；行为与退出码均符合预期。
+
+**实际安装**：`--host codex --host claude`，复制模式，分别装到 `~/.codex/skills/` 与 `~/.claude/skills/`，两处副本的包清单均为 `417c6bcc`。OpenCode 不单独安装，`opencode debug skill`（不调用模型）确认它从 `~/.claude/skills/` 发现了全部四个能力，37 个 skill 中没有同名重复。附带观察：本会话所在的 Claude Code 在安装后立即列出了这四个 skill；这是运行中的会话，不算新会话证据。
+
+**行为探测**：三个宿主用同一提示，在仓库外的全新空项目中各开新会话，要求实际读取主入口、按「能力读取」找到 design 能力，只回答两个路径和所用级别，不写文件。每次运行前后都核对项目文件。
+
+| 情境 | Codex（gpt-6-astra） | Claude Code | OpenCode（glm-5.2） |
+| --- | --- | --- | --- |
+| 第 2 级：点名 skill，无项目登记 | 全局副本路径，第 2 级，项目零改动 | 同左 | 同左（见下方重跑说明） |
+| 第 1 级：项目 AGENTS.md 登记不相邻的主入口与阶段能力，同时存在全局副本 | 登记路径，第 1 级，未读全局副本 | 同左；追踪显示未调用工具读 AGENTS.md，直接读登记路径，说明会话开始时已自动加载项目 AGENTS.md | 默认权限下选择了第 1 级，但读取被 `external_directory` 权限自动拒绝，运行以错误结束、未给答案；在项目 `opencode.json` 中只放行该路径后：登记路径，第 1 级，未读全局副本 |
+
+**测试框架错误与纠正**：头两次 OpenCode 运行由 `cd /tmp && python3 …` 启动，继承了 `PWD=/tmp`。OpenCode 按 `PWD` 而非进程工作目录定位项目，因此实际在 `/tmp` 运行：那两次的“项目零改动”不成立，第 1 级那次也没有看到项目 AGENTS.md。改为传 `--dir` 并同步 `PWD` 后重跑，以上表格中的 OpenCode 结果均来自重跑；原始输出保留，文件名不带 `rerun`。根目录 AGENTS.md 已补上这条注意事项。
+
+**发现**：
+- 三个宿主都能在新会话中按名称发现本包，并按「能力读取」解析阶段能力。第 1 级登记优先于宿主发现的同名全局副本，入口登记（A）在三个宿主上首次有了行为证据。
+- Claude Code 2.1.302 会自动加载项目 AGENTS.md，按 AGENTS.md 接入在该版本可行。
+- OpenCode 读取项目外、且不在其 skills 目录中的登记路径需要 `external_directory` 权限，非交互运行会自动拒绝。README 已写明：在 OpenCode 中优先让入口落在它会发现的 skills 目录，必要时只为该路径放行。被拒后运行直接以错误结束，没有按「缺口处理」报告缺口；看起来是运行器在拒绝后终止，不能据此判断模型是否遵守规则。
+- 本机 OpenCode 另通过插件加载了上游 Superpowers 的 brainstorming、writing-plans 等 skill，会与本包的 design、plan 能力同时可见。本轮没有测试两者竞争触发时的选择。
+
+证据在 [install-2026-10-28](install-2026-10-28/provenance.json)：各宿主版本与模型、全局指令文件是否存在（只有 `~/.codex/AGENTS.md` 存在，4602 字节，Codex 探测会加载它）、OpenCode 发现结果、全部探测的提示、输出与运行记录、第 1 级所用的 AGENTS.md 模板，以及 Claude Code 的工具调用追踪。证据中的临时路径已替换为 `<T>`；提交前扫描过，没有令牌、邮箱或全局 AGENTS.md 原文。
+
+**限制**：每种情境每个宿主只跑一次。提示中点名了 skill 或写明“按项目指令”，没有测试不点名时的隐式触发。只验证了入口发现与能力查找，没有在安装后的宿主中运行设计、计划、执行或收口流程。Claude Code 的模型未记录。Codex 项目级安装与 GitHub 安装（skill-installer）未测。安装留在本机 `~/.codex/skills/` 与 `~/.claude/skills/` 两处，可用 `tools/install.py --uninstall` 移除。未 push。

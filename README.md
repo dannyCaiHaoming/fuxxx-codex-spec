@@ -22,18 +22,34 @@
 
 ## 快速使用
 
-### 1. 先让 Agent 能读到 Skill
+### 1. 安装到宿主
 
-Skill 入口是 [`fucxxx-codex-spec/SKILL.md`](fucxxx-codex-spec/SKILL.md)，同目录的 `references/` 和 `assets/` 也需要保持可访问。
+只安装四个能力目录：`fucxxx-codex-spec/`、`fucxxx-codex-spec-init/`、`fucxxx-codex-spec-design/`、`fucxxx-codex-spec-plan/`。不要把整个仓库及验证样例当作 Skill 安装。用仓库里的脚本安装，四个目录会装进同一个 skills 目录：
 
-尚未安装时，可以在目标项目会话中明确指定本地包的真实路径：
+```bash
+python3 -I tools/install.py --host codex --host claude
+```
+
+| 宿主 | 安装位置 | 说明 |
+| --- | --- | --- |
+| Codex | `${CODEX_HOME:-~/.codex}/skills/` | `--host codex`；会话中可用 `$fucxxx-codex-spec` 显式调用 |
+| Claude Code | `~/.claude/skills/`；项目级 `<项目>/.claude/skills/` | `--host claude`，项目级再加 `--project <项目>`；可用 `/fucxxx-codex-spec` 调用 |
+| OpenCode | 会自动加载 `~/.claude/skills/`；单独安装用 `~/.config/opencode/skills/`，项目级 `<项目>/.opencode/skills/` | 装了 Claude Code 用户级就不必再装。脚本拒绝两处同时做用户级安装，否则 OpenCode 会发现两份同名 skill |
+
+脚本只复制这四个目录，装完按包清单哈希核对副本与仓库一致，并打印可写进项目 AGENTS.md 的包根。同名目录不属于本包时拒绝覆盖；已装其他版本时需加 `--force`，旧版先备份到 skills 目录之外。`--link` 改为符号链接到本仓库，便于开发时即时生效；`--uninstall` 只移除本包的目录；`--dry-run` 只显示将做什么。装完要开新会话才会被发现。Codex 的项目级目录没有在本机文档中核实，脚本暂不支持，需要时用 `--dest` 指定。
+
+2026-10-28 在本机三个宿主上实测（codex-cli 0.163.0、Claude Code 2.1.302、OpenCode 1.19.3）：新会话都能按名称发现并读取主入口，再找到 design 能力；项目 AGENTS.md 登记了不相邻的入口时，三者都优先使用登记位置，而不是全局安装的副本。Claude Code 2.1.302 会自动加载项目 AGENTS.md，无需另写 CLAUDE.md。
+
+OpenCode 有一处要注意：读取项目目录之外、也不在其 skills 目录中的路径，需要 `external_directory` 权限。交互界面会弹窗询问；`opencode run` 这类非交互运行会自动拒绝，于是读不到 AGENTS.md 登记的项目外入口。在 OpenCode 中使用时，优先让入口落在它会发现的 skills 目录里（例如 `~/.claude/skills/`）；确需登记项目外位置时，在项目 `opencode.json` 的 `permission.external_directory` 中只为该路径放行。过程和证据见[验证记录](validation/skill-package-v0.4.md)。OpenCode 若另装了上游 Superpowers 插件，它的 brainstorming、writing-plans 等 skill 会和本包的 design、plan 能力同时可见；在已采用本方法的项目里，AGENTS.md 的接入声明会指明以本包分流。
+
+未安装时，也可以在目标项目会话中直接指定本地包的真实路径：
 
 ```text
 读取 /实际存放位置/fucxxx-codex-spec/SKILL.md，按它的方法处理本项目。
 先检查已有规范与资料位置。只写当前 MVP 的设计和实施计划，给我审阅，先不要实施。
 ```
 
-这只是通过文件入口使用方法，不代表已安装或已验证自动发现。正式安装由所用宿主的 Skill 管理方式完成；完整使用请提供 `fucxxx-codex-spec/`、`fucxxx-codex-spec-init/`、`fucxxx-codex-spec-design/`、`fucxxx-codex-spec-plan/` 四个目录。不要把整个仓库及验证样例当作 Skill 安装。这些目录无需固定相邻，但 Agent 必须能找到并读取实际入口。宿主已经发现该名称时，可以显式使用 `$fucxxx-codex-spec`。
+这种方式只是通过文件入口使用方法，宿主不会自动发现。
 
 ### 2. 正式采用时接入项目 AGENTS.md
 
@@ -237,6 +253,7 @@ Spec Kit 的 `clarify`、`checklist`、`analyze` 提供澄清和质量检查，�
 | [v0.4 设计草稿](fucxxx-codex-spec-skill-design-draft.md) | 历史设计依据；后续规则以当前 Skill 包为准 |
 | [验证记录](validation/skill-package-v0.4.md) | 各版本的样例结果、证据和未验证范围 |
 | [结构检查脚本](tools/check-package.py) | 包结构、YAML、围栏、链接、空白、vendor 哈希与包清单 SHA-256 |
+| [安装脚本](tools/install.py) | 把四个能力目录装到 Codex、Claude Code 或 OpenCode，并核对包清单 |
 
 `tools/` 是仓库维护工具，不随 Skill 安装。每轮修改规则后跑一次结构检查：
 

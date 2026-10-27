@@ -1,0 +1,13 @@
+{
+  "opencode.json_permission": {
+    "external_directory": {
+      "<T>/pkgs/*": "allow"
+    }
+  },
+  "exit": 0,
+  "seconds": 31.5,
+  "files_changed_in_project": [],
+  "registered_main": true,
+  "registered_design": true,
+  "global_copy_read": false
+}

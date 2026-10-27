@@ -1,0 +1,2 @@
+Now I'll follow the "能力读取" order. First, check level 1: valid AGENTS.md registration.
+The glob shows AGENTS.md files only in test-run subdirectories, not at the project root `/private/tmp`. Let me check common global config locations for a valid AGENTS.md that might register the skill entries.

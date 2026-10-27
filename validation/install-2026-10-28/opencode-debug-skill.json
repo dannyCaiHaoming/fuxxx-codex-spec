@@ -1,0 +1,23 @@
+{
+  "command": "opencode debug skill (cwd: empty temp dir)",
+  "total_skills": 37,
+  "fucxxx": [
+    {
+      "name": "fucxxx-codex-spec-init",
+      "location": "/Users/caihaoming/.claude/skills/fucxxx-codex-spec-init/SKILL.md"
+    },
+    {
+      "name": "fucxxx-codex-spec-design",
+      "location": "/Users/caihaoming/.claude/skills/fucxxx-codex-spec-design/SKILL.md"
+    },
+    {
+      "name": "fucxxx-codex-spec-plan",
+      "location": "/Users/caihaoming/.claude/skills/fucxxx-codex-spec-plan/SKILL.md"
+    },
+    {
+      "name": "fucxxx-codex-spec",
+      "location": "/Users/caihaoming/.claude/skills/fucxxx-codex-spec/SKILL.md"
+    }
+  ],
+  "duplicate_names": []
+}
