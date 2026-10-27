@@ -37,8 +37,10 @@ PACKAGES = [
     "fucxxx-codex-spec-plan",
 ]
 
+# 两种范围都检查的仓库根文档。
+ROOT_ENTRY_DOCS = ["README.md", "AGENTS.md"]
 # 仓库范围检查时另外纳入的顶层文档。
-ROOT_DOCS = ["README.md", "fucxxx-codex-spec-skill-design-draft.md"]
+ROOT_DOCS = ["fucxxx-codex-spec-skill-design-draft.md"]
 
 VENDOR_MANIFEST = "vendor/superpowers-7.0.0/manifest.json"
 
@@ -244,6 +246,9 @@ def md_files(root: str, scope: str) -> list[str]:
     files: list[str] = []
     for pkg in PACKAGES:
         files += [f for f in walk_files(root, pkg) if f.endswith(".md")]
+    for doc in ROOT_ENTRY_DOCS:
+        if os.path.isfile(os.path.join(root, doc)):
+            files.append(doc)
     if scope == "repo":
         for doc in ROOT_DOCS:
             if os.path.isfile(os.path.join(root, doc)):
@@ -251,9 +256,6 @@ def md_files(root: str, scope: str) -> list[str]:
         for extra in ("validation", "vendor"):
             if os.path.isdir(os.path.join(root, extra)):
                 files += [f for f in walk_files(root, extra) if f.endswith(".md")]
-    else:
-        if os.path.isfile(os.path.join(root, "README.md")):
-            files.append("README.md")
     return sorted(set(files))
 
 
@@ -450,7 +452,7 @@ def main(argv: list[str]) -> int:
         "--scope",
         choices=["packages", "repo"],
         default="packages",
-        help="packages（默认）只查四个能力目录与 README；repo 另含草稿、validation 与 vendor 文档",
+        help="packages（默认）只查四个能力目录与根目录 README、AGENTS.md；repo 另含草稿、validation 与 vendor 文档",
     )
     ap.add_argument("--expect-manifest", metavar="SHA256", help="核对包清单哈希是否为该值")
     ap.add_argument("--write-manifest", metavar="PATH", help="把逐文件哈希写成 JSON 清单")

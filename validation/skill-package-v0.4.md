@@ -259,3 +259,14 @@
 本轮包清单 SHA-256：`d9298c1dfd27326cfdab2444f52173be4e2f2207379eb5e7aef77107c91473c3`，逐文件清单见 [package-manifest.json](consolidation-2026-10-28/package-manifest.json)。`tools/check-package.py` 7 项全部通过。
 
 限制：这是触及全部六份规则文件的改写，只有静态检查、逐句覆盖核对和引用解析检查，**没有运行行为样例**。此前各轮行为样例只证明它们各自记录的包版本，不能直接视为本版本的行为证据。如果按条目名引用会让模型漏读底线，这类问题只有行为样例才能暴露。未安装、commit 或 push。
+
+## 2026-10-28：仓库根 AGENTS.md
+
+本仓库此前没有自己的开发入口：README 明确说 `validation/` 里的 AGENTS.md 只是样例，而改规则要做哪些检查、行为样例怎么隔离、vendor 怎么升级，都只散在验证记录和 `ADAPTATION.md` 里。新增根目录 [AGENTS.md](../AGENTS.md)，写明四件事：
+
+- 本仓库是 Skill 包的源码仓库，不是采用该方法的业务项目，也不是采用声明。本仓库不建立 `fucxxx-codex-spec/` 项目资料根，因为这个默认名称正是主包目录。
+- 修改规则时先确认唯一权威位置，改完运行检查脚本，并按本文惯例追加验证小节。
+- 行为样例必须复制到仓库目录之外运行。Codex 会合并从 Git 根到当前目录路径上的 AGENTS.md，在仓库内运行会让本文叠加进样例；provenance 还要记录是否加载了全局 `~/.codex/AGENTS.md`。以往各轮样例都在系统临时目录运行，未受此影响，但记录里没有写明全局 AGENTS.md 的加载情况。
+- vendor 只在明确任务中人工比较升级。
+
+`tools/check-package.py` 改为在两种范围都检查根目录的 README.md 与 AGENTS.md；README 指向新入口。包内容未变，包清单 SHA-256 仍为 `d9298c1dfd27326cfdab2444f52173be4e2f2207379eb5e7aef77107c91473c3`，检查 7 项通过。本文只是仓库维护说明，没有对 Codex 实际加载本文做行为验证。未 push。

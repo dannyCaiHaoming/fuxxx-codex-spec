@@ -245,4 +245,4 @@ python3 -I tools/check-package.py --expect-manifest <上一轮哈希>
 
 `--scope repo` 连带检查草稿与验证样例，`--write-manifest <路径>` 生成逐文件清单，`--json` 便于存入验证证据。它只做静态检查，不能替代行为样例。
 
-`validation/` 中的 AGENTS.md、代码和项目文档是测试样例，不是本仓库的开发入口或需要安装的组成部分。
+本仓库的开发入口是根目录 [AGENTS.md](AGENTS.md)：说明仓库与 Skill 包的区别、修改规则与运行行为样例的要求。`validation/` 中的 AGENTS.md、代码和项目文档是测试样例，不是本仓库的开发入口或需要安装的组成部分。
