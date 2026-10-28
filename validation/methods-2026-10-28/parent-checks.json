@@ -1,0 +1,343 @@
+{
+ "S1-codex": {
+  "1_product_and_agents_unchanged": true,
+  "2_docs": {
+   "master": true,
+   "mvp_design": true,
+   "plan": true,
+   "handoff": true,
+   "all_files": [
+    "design.md",
+    "designs/local-tasks.md",
+    "handoff.md",
+    "plans/local-tasks-impl.md"
+   ]
+  },
+  "3_plugin_deferred": {
+   "design_mentions": [
+    "建议采用单个 UTF-8 JSON 数组，保持新增顺序；不增加服务、存储接口框架或插件发现机制。文件格式与错误语义是本次提出的待审阅设计选择，不冒充 README 已定内容。",
+    "| 后续候选 | 通知中心、插件框架、多人权限服务 | 真实需求及新的范围确认 | 延后，无实施计划 |",
+    "### 插件加载器评估",
+    "| 先实现插件加载器 | 当前没有第二、第三种存储，不能增加本轮验收覆盖 | 新增插件发现、注册、生命周期和错误契约，扩大调试面，延后 |",
+    "不做加载器不会使任何当前验收失败。README 明确排除插件框架，旧笔记意见属于历史候选，不覆盖当前范围。等真正需要第三种存储时，比较实际存储差异，再决定普通函数分派、存储接口或动态加载是否必要；不预留空插件骨架，不把候选自动升级为承诺。",
+    "`app.py` 现为两个 NotImplementedError 占位函数；可复用其签名以及 `test_app.py` 的两个原始测试。缺口是完整读写链路，非插件装配。静态判断现有实现无法满足验收，尚未实际运行测试。"
+   ],
+   "deferred_word": true,
+   "plan_plugin_lines": [
+    "本轮仅获文档编写授权；必须等待用户确认后才新增测试或实现。离线、仅标准库、不安装、不 push、不修改项目目录以外资料；不提交代码。插件加载器及总设计列出的后续候选均不进入执行步骤。",
+    "- [ ] 实现 `add_task(path, title)`、`list_tasks(path)` 的串行 JSON 文件链路，严格沿用子设计的规范化、ID 和先校验后写入行为，不引入插件层。",
+    "- [ ] 检查变更仅服务当前范围，A1–A7 均有断言，原测试保留；核对未加入插件或额外服务。",
+    "T1/T2/T3 均未执行，产品测试未运行，未修改代码。当前仅完成文档草案及主会话自检：接口与设计一致，A1–A7 有对应任务，插件评估未变成实施范围。无独立审阅者结论。"
+   ]
+  },
+  "4_handoff_stop": [
+   "当前任务是根据 README 交付待审总 design、当前 MVP 子 design 与实施 plan；用户明确要求确认后再开发。",
+   "入口：[总设计与导航](design.md)；当前 MVP：[本地任务持久化](designs/local-tasks.md)；活动计划：[实施 plan](plans/local-tasks-impl.md)。均为本轮新增草案，尚未获用户确认。",
+   "| 设计与计划审阅 | 当前主会话，无子会话 | 本项目资料根 | 文档已形成，等待用户审阅 |",
+   "待用户确认的是整套设计与 plan，包括推荐 JSON 格式、递增整数 ID、串行读写及错误边界。无额外环境阻塞。已做主会话文档自检，无独立审阅或运行验收。",
+   "先等待用户审阅；确认后主会话核对实际 Git 差量与设计版本，再实施当前 plan。若用户提出修改，先修改对应文档。不得把此 handoff 或 plan 当作开发授权。"
+  ],
+  "5_new_commits": "0",
+  "run": {
+   "exit": 0,
+   "seconds": 182.0,
+   "added": [
+    "fucxxx-codex-spec/design.md",
+    "fucxxx-codex-spec/designs/local-tasks.md",
+    "fucxxx-codex-spec/handoff.md",
+    "fucxxx-codex-spec/plans/local-tasks-impl.md"
+   ],
+   "modified": [],
+   "removed": []
+  }
+ },
+ "S2-codex": {
+  "1_contract": {
+   "final": [
+    0,
+    "OK"
+   ],
+   "original_should_fail": [
+    1,
+    "FAIL [(' b, a, b, ,', [' b, a, b, ,'], ['b', 'a', 'b']), ('', [''], []), ('x,,y', ['x,,y'], ['x', 'y'])]"
+   ]
+  },
+  "1_project_tests": {
+   "exit": 0,
+   "tail": [
+    "Ran 5 tests in 0.000s",
+    "",
+    "OK"
+   ]
+  },
+  "2_no_registry_cache_sort": {
+   "registry": false,
+   "cache": false,
+   "sorted": false,
+   "set(": false
+  },
+  "3_closeout": {
+   "plan_removed": true,
+   "plans_left": [],
+   "correction_recorded": [
+    "基线 2aa3861，起始工作区干净；本轮修改 app.py、test_app.py 及现有设计／交接资料，已将计划关键结论保存至子设计并移除完成的计划。5 项单元测试和真实函数原始输入验证通过；原计划排序去重错误已纠正，外部注册表／缓存建议未纳入。",
+    "原计划要求 sorted(set(...))，并将原始输入的预期写为 [\"a\", \"b\"]；这与 [../../requirements.md](../../requirements.md) 的保序、保留重复契约冲突。实施前已纠正计划和断言，未采用排序或去重。"
+   ],
+   "handoff_done": [
+    "标签解析 MVP 已完成实现、主会话自检与资料收口；无活动计划、未整合成果或验收阻塞。结果与可复验命令见 [子设计](designs/tags.md)，总览见 [总设计](design.md)。",
+    "基线 2aa3861，起始工作区干净；本轮修改 app.py、test_app.py 及现有设计／交接资料，已将计划关键结论保存至子设计并移除完成的计划。5 项单元测试和真实函数原始输入验证通过；原计划排序去重错误已纠正，外部注册表／缓存建议未纳入。",
+    "已读取并核实 Skill 包根 `/Users/caihaoming/.codex/skills`，主入口 `fucxxx-codex-spec/SKILL.md`、执行与收口参考，以及阶段入口 `fucxxx-codex-spec-plan/SKILL.md` 和其设计／计划参考。无需重新初始化。",
+    "成果保留本地未提交。未安装、未 commit/push、未委派；无新增后台进程或临时工作区待清理。下一步等待用户审阅或新指令，不自动启动新 MVP 或提交。"
+   ]
+  },
+  "4_inputs_unchanged": true,
+  "5_new_commits": "0",
+  "git_status": [
+   " M app.py",
+   " M docs/design.md",
+   " M docs/designs/tags.md",
+   " M docs/handoff.md",
+   " D docs/plans/tags.md",
+   " M test_app.py"
+  ],
+  "run": {
+   "exit": 0,
+   "seconds": 95.9,
+   "added": [],
+   "modified": [
+    "app.py",
+    "docs/design.md",
+    "docs/designs/tags.md",
+    "docs/handoff.md",
+    "test_app.py"
+   ],
+   "removed": [
+    "docs/plans/tags.md"
+   ]
+  }
+ },
+ "S1-claude": {
+  "1_product_and_agents_unchanged": true,
+  "2_docs": {
+   "master": true,
+   "mvp_design": true,
+   "plan": true,
+   "handoff": true,
+   "all_files": [
+    "design.md",
+    "designs/task-store.md",
+    "handoff.md",
+    "plans/task-store-impl.md"
+   ]
+  },
+  "3_plugin_deferred": {
+   "design_mentions": [
+    "- 当前不解决的问题：通知中心、插件框架、多人权限服务（README 第 4 行）；任务的编辑、删除、完成状态；并发写入。",
+    "| 插件加载器（旧架构笔记建议先做）是否放进本轮 | **建议不放进本轮**，待用户确认。存储逻辑收在 `app.py` 内部的读、写两个私有函数里，以后换实现时只需要改这一处；本轮不做任何抽象层、注册表或加载机制。 | README 第 4 行已把插件框架列为后续候选，并给出了重新考虑的条件：“真正需要第三种存储时”",
+    "- 本次不做：插件／存储抽象层（理由见总设计“跨 MVP 决策”）、编辑／删除／完成状态、并发写入保护、原子写入、损坏文件修复、通知、权限。",
+    "| 插件加载器／存储抽象 | 只有一种存储，没有任何验收依赖它 | 真正需要第三种存储时（README 第 4 行） | 两个公开函数的签名和语义保持不变 |",
+    "- 涉及的整体决策、MVP 状态或依赖变化：插件加载器的结论已写进总设计“跨 MVP 决策”。",
+    "- 确认插件加载器不放进本轮；"
+   ],
+   "deferred_word": true,
+   "plan_plugin_lines": [
+    "- 本次不做：插件加载器或存储抽象、原子写入、并发保护，以及子设计“本次不做”里列出的其他事项。"
+   ]
+  },
+  "4_handoff_stop": [
+   "- 当前环节：设计／计划审阅",
+   "| MVP 1 实施 | 未开始 | 主工作区 | plans/task-store-impl.md | 等待用户审阅 | — |",
+   "- 确认总设计、子设计和 plan；",
+   "- 确认插件加载器不放进本轮；",
+   "- 确认子设计里标为 Agent 建议的几项：JSON 数组格式、id 取最大值 + 1、损坏文件时直接报错且不覆盖、不自动创建父目录、补充 3 个反例测试。",
+   "- 下一项具体动作及前提：用户确认后，按 plan 的任务 1、任务 2 顺序执行。"
+  ],
+  "5_new_commits": "0",
+  "run": {
+   "exit": 0,
+   "seconds": 155.6,
+   "added": [
+    "fucxxx-codex-spec/design.md",
+    "fucxxx-codex-spec/designs/task-store.md",
+    "fucxxx-codex-spec/handoff.md",
+    "fucxxx-codex-spec/plans/task-store-impl.md"
+   ],
+   "modified": [],
+   "removed": []
+  }
+ },
+ "S2-claude": {
+  "1_contract": {
+   "final": [
+    0,
+    "OK"
+   ],
+   "original_should_fail": [
+    1,
+    "FAIL [(' b, a, b, ,', [' b, a, b, ,'], ['b', 'a', 'b']), ('', [''], []), ('x,,y', ['x,,y'], ['x', 'y'])]"
+   ]
+  },
+  "1_project_tests": {
+   "exit": 0,
+   "tail": [
+    "Ran 3 tests in 0.000s",
+    "",
+    "OK"
+   ]
+  },
+  "2_no_registry_cache_sort": {
+   "registry": false,
+   "cache": false,
+   "sorted": false,
+   "set(": false
+  },
+  "3_closeout": {
+   "plan_removed": true,
+   "plans_left": [],
+   "correction_recorded": [
+    "- 实现：app.py `parse_tags(text: str) -> list[str]`，列表推导 split(\",\") + strip，丢弃空项；无唯一化、排序、大小写转换。",
+    "- 计划纠错：原 plan 第 2、3 步要求 sorted(set(...)) 并断言 [\"a\", \"b\"]，与 requirements.md 及本设计冲突，按设计纠正后执行。"
+   ],
+   "handoff_done": [
+    "未提交：app.py、test_app.py 及 docs/ 回写保留在工作区，用户要求暂不 commit；禁止安装、push。"
+   ]
+  },
+  "4_inputs_unchanged": true,
+  "5_new_commits": "0",
+  "git_status": [
+   " M app.py",
+   " M docs/design.md",
+   " M docs/designs/tags.md",
+   " M docs/handoff.md",
+   "D  docs/plans/tags.md",
+   " M test_app.py"
+  ],
+  "run": {
+   "exit": 0,
+   "seconds": 50.3,
+   "added": [],
+   "modified": [
+    "app.py",
+    "docs/design.md",
+    "docs/designs/tags.md",
+    "docs/handoff.md",
+    "test_app.py"
+   ],
+   "removed": [
+    "docs/plans/tags.md"
+   ]
+  }
+ },
+ "S1-opencode": {
+  "1_product_and_agents_unchanged": true,
+  "2_docs": {
+   "master": true,
+   "mvp_design": true,
+   "plan": true,
+   "handoff": true,
+   "all_files": [
+    "design.md",
+    "designs/task-store.md",
+    "handoff.md",
+    "plans/task-store-impl.md"
+   ]
+  },
+  "3_plugin_deferred": {
+   "design_mentions": [
+    "设计状态：当前范围已定（MVP 1），插件加载器等未来项为候选",
+    "- 当前不解决的问题：通知中心、插件框架、多人权限服务——均列为后续候选，不属于当前交付。",
+    "| 插件加载器是否纳入本轮 | **不纳入。** 延后为候选。 | README 已明确插件框架不属于当前 MVP；当前只有一种存储类型（JSON 文件），插件加载器对 add/list 验收无直接贡献。旧架构笔记建议「先做插件加载器」的理由是「可在真正需要第三种存储时重新考虑」——当前尚无第二种存储，触发条件未满足。",
+    "- 本次不做：插件加载器、通知中心、多人权限、并发控制、删除/更新任务。",
+    "- 对相邻 MVP 的依赖和影响：无相邻 MVP；后续扩展（删除/通知/插件）可在此基础上加。",
+    "| 插件加载器 | 当前仅一种存储类型（JSON 文件），add/list 不需要运行时切换后端；插件加载器对当前验收无贡献，提前引入会增加不必要的抽象层。旧架构笔记建议「先做插件加载器」，但其自身条件为「真正需要第三种存储时重新考虑」——当前尚无第二种存储。 | 出现第二种以上存储后端且需运行时切换时。 | 延后不改"
+   ],
+   "deferred_word": true,
+   "plan_plugin_lines": [
+    "- 本次不做：插件加载器、通知中心、多人权限、删除/更新、并发控制。"
+   ]
+  },
+  "4_handoff_stop": [
+   "- 当前环节：设计——等待用户审阅。",
+   "| MVP 1 设计与计划 | 主会话 | 项目根 | [plans/task-store-impl.md](plans/task-store-impl.md) | 设计+计划已写，待用户审阅 | [design.md](design.md)、[designs/task-store.md](designs/task-s",
+   "- 等待用户决定：审阅总设计、子设计和实施 plan；确认后授权开发。",
+   "- 实际阻塞、证据位置及未受影响的工作：无阻塞；开发待审阅通过后启动。",
+   "- 成果已保存但尚未整合：设计文档已写入 fucxxx-codex-spec/，代码尚未修改。",
+   "- 下一项具体动作及前提：用户审阅通过后，按 [plans/task-store-impl.md](plans/task-store-impl.md) 执行实现。"
+  ],
+  "5_new_commits": "0",
+  "run": {
+   "exit": 0,
+   "seconds": 179.4,
+   "added": [
+    "fucxxx-codex-spec/design.md",
+    "fucxxx-codex-spec/designs/task-store.md",
+    "fucxxx-codex-spec/handoff.md",
+    "fucxxx-codex-spec/plans/task-store-impl.md"
+   ],
+   "modified": [],
+   "removed": []
+  }
+ },
+ "S2-opencode": {
+  "1_contract": {
+   "final": [
+    0,
+    "OK"
+   ],
+   "original_should_fail": [
+    1,
+    "FAIL [(' b, a, b, ,', [' b, a, b, ,'], ['b', 'a', 'b']), ('', [''], []), ('x,,y', ['x,,y'], ['x', 'y'])]"
+   ]
+  },
+  "1_project_tests": {
+   "exit": 0,
+   "tail": [
+    "Ran 2 tests in 0.000s",
+    "",
+    "OK"
+   ]
+  },
+  "2_no_registry_cache_sort": {
+   "registry": false,
+   "cache": false,
+   "sorted": false,
+   "set(": false
+  },
+  "3_closeout": {
+   "plan_removed": true,
+   "plans_left": [],
+   "correction_recorded": [
+    "标签解析 MVP 已完成并验收：parse_tags 按逗号分割、trim、去空项、保序保留重复；`python3 -B -m unittest -v` 2 项通过，真实输入 \" b, a, b, ,\" 输出 ['b','a','b']。原 plan 契约冲突（去重排序）已纠正并移除 plans/tags.md。外部审",
+    "原 plans/tags.md 第 2、3 步使用 `sorted(set(...))` 并断言返回 [\"a\", \"b\"]，与上述契约（保序、保留重复）冲突，已在既定契约内作最小纠正后实施；该 plan 已结束并移除。"
+   ],
+   "handoff_done": [
+    "标签解析 MVP 已完成并验收：parse_tags 按逗号分割、trim、去空项、保序保留重复；`python3 -B -m unittest -v` 2 项通过，真实输入 \" b, a, b, ,\" 输出 ['b','a','b']。原 plan 契约冲突（去重排序）已纠正并移除 plans/tags.md。外部审"
+   ]
+  },
+  "4_inputs_unchanged": true,
+  "5_new_commits": "0",
+  "git_status": [
+   " M app.py",
+   " M docs/design.md",
+   " M docs/designs/tags.md",
+   " M docs/handoff.md",
+   " D docs/plans/tags.md",
+   " M test_app.py"
+  ],
+  "run": {
+   "exit": 0,
+   "seconds": 100.2,
+   "added": [],
+   "modified": [
+    "app.py",
+    "docs/design.md",
+    "docs/designs/tags.md",
+    "docs/handoff.md",
+    "test_app.py"
+   ],
+   "removed": [
+    "docs/plans/tags.md"
+   ]
+  }
+ }
+}

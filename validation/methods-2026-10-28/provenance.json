@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-28",
+  "package_manifest_sha256": "417c6bcc4eeba56bbf4d8e1e39b7171f07aa83a0659c39ff5612ad2683042d25",
+  "package_commit": "ab8c7c6",
+  "installed_copies": {
+    "codex": "~/.codex/skills",
+    "claude": "~/.claude/skills",
+    "opencode": "~/.claude/skills (auto-loaded)"
+  },
+  "hosts": {
+    "codex": {
+      "version": "codex-cli 0.163.0",
+      "model": "gpt-6-astra",
+      "cmd": "codex exec --skip-git-repo-check --ephemeral -s workspace-write -C <project>"
+    },
+    "claude": {
+      "version": "2.1.302 (Claude Code)",
+      "model": "claude-opus-5-5",
+      "cmd": "claude -p --permission-mode acceptEdits --allowedTools Read Write Edit Glob Grep Skill Bash(python3|git|rm|ls|mv|mkdir:*)"
+    },
+    "opencode": {
+      "version": "1.19.3",
+      "model": "glm-5.2",
+      "cmd": "opencode run --dir <project> (PWD=<project>), default permissions"
+    }
+  },
+  "global_instruction_files": {
+    "~/.codex/AGENTS.md": "present, 4602 bytes, loaded by Codex",
+    "others": "absent (~/.claude/CLAUDE.md, ~/.config/opencode/AGENTS.md, ~/.agents/AGENTS.md)"
+  },
+  "projects": "fresh temp git repos outside this repository, one initial commit each; AGENTS.md = current init snippet with registered installed copies; request does not name the skill",
+  "harness_errors": [
+    "S1/S2 OpenCode launched concurrently: S1 failed in 0.4s with 'database is locked' (opencode SQLite); kept as S1-opencode-dblocked, S1 rerun alone",
+    "first parent check used python -I, which skips cwd on sys.path; contract checks errored on every project and were rerun with an explicit sys.path entry"
+  ],
+  "redactions": "Claude raw stream-json replaced by session-summary.json (dropped local env details); Codex session ids redacted"
+}

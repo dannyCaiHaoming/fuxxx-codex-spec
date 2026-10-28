@@ -1,0 +1,26 @@
+我先了解项目现状：读取 README、旧架构笔记，以及是否已有 fucxxx-codex-spec 资料目录。同时加载 design 阶段能力。
+读取项目全部文件，并查找旧架构笔记。
+读取设计参考与模板，再开始编写。
+已读取全部资料。现在创建资料目录结构并编写设计文档。
+基线确认：两个测试均因 `NotImplementedError` 失败（存根未实现）。现在编写全部设计文档。
+子设计已写。现在加载 plan 能力编写实施计划。
+设计、计划和交接文档已全部写好，请审阅。产物如下：
+
+| 文档 | 路径 | 内容 |
+|---|---|---|
+| 总设计 | `fucxxx-codex-spec/design.md` | 产品目标、整体架构、MVP 划分、跨 MVP 决策（含插件加载器评估） |
+| MVP 子设计 | `fucxxx-codex-spec/designs/task-store.md` | add_task/list_tasks 接口、存储格式、id 策略、验收、延后项 |
+| 实施 plan | `fucxxx-codex-spec/plans/task-store-impl.md` | 3 步实施安排与验证命令 |
+| handoff | `fucxxx-codex-spec/handoff.md` | 当前停在设计审阅点 |
+
+**插件加载器评估结论：不纳入本轮。** 理由：
+
+1. README 已明确插件框架不属于当前 MVP，当前验收只有 add/list 两个函数。
+2. 当前仅一种存储类型（JSON 文件），旧架构笔记自身的触发条件是「真正需要第三种存储时重新考虑」——条件未满足。
+3. 提前引入插件加载器只会增加抽象层，对 add/list 验收无直接贡献。
+
+触发重新考虑的条件已记入子设计「延后项」：出现第二种以上存储后端且需运行时切换时。
+
+**代码基线**：commit f92433a，存根未实现，测试 2/2 ERROR。
+
+请审阅，确认后我按 plan 执行实现。

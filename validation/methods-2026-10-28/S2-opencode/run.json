@@ -1,0 +1,24 @@
+{
+ "exit": 0,
+ "seconds": 100.2,
+ "new_commits": "0",
+ "git_status": [
+  " M app.py",
+  " M docs/design.md",
+  " M docs/designs/tags.md",
+  " M docs/handoff.md",
+  " D docs/plans/tags.md",
+  " M test_app.py"
+ ],
+ "added": [],
+ "removed": [
+  "docs/plans/tags.md"
+ ],
+ "modified": [
+  "app.py",
+  "docs/design.md",
+  "docs/designs/tags.md",
+  "docs/handoff.md",
+  "test_app.py"
+ ]
+}

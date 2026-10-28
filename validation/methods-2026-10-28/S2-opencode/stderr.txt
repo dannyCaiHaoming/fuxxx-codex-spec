@@ -1,0 +1,101 @@
+[0m
+> build · glm-5.2
+[0m
+[0m→ [0mSkill "fucxxx-codex-spec"
+[0m✱ [0mGlob "docs/**/*.md"[90m 4 matches[0m
+[0m→ [0mRead /Users/caihaoming/.claude/skills/fucxxx-codex-spec/references/execution.md
+[0m→ [0mRead /Users/caihaoming/.claude/skills/fucxxx-codex-spec/references/closeout.md
+[0m→ [0mRead docs/handoff.md
+[0m→ [0mRead docs/design.md
+[0m→ [0mRead docs/designs/tags.md
+[0m→ [0mRead docs/plans/tags.md
+[0m✱ [0mGlob "**/*.{md,txt}"[90m 7 matches[0m
+[0m→ [0mRead review-note.md
+[0m→ [0mRead requirements.md
+[0m✱ [0mGlob "**/*.py"[90m 2 matches[0m
+[0m→ [0mRead app.py
+[0m→ [0mRead test_app.py
+[0m
+[0m# [0mTodos
+[•] 按需求契约实现 app.py 的 parse_tags(逗号分割、trim、去空项、保序保留重复)
+[ ] 在 test_app.py 补充设计要求的原始输入断言 " b, a, b, ," -> ["b","a","b"]
+[ ] 运行 python3 -B -m unittest -v 验证
+[ ] 收口回写:designs/tags.md 最终方案与证据、design.md MVP 状态、handoff.md 状态与提交决定;处置外部审查建议(延后);移除已结束 plans/tags.md
+[0m
+[0m← [0mEdit app.py
+Index: <T>/project/app.py
+===================================================================
+--- <T>/project/app.py
++++ <T>/project/app.py
+@@ -1,2 +1,2 @@
+ def parse_tags(text):
+-    return text.split(";")
++    return [t.strip() for t in text.split(",") if t.strip()]
+
+[0m
+[0m← [0mEdit test_app.py
+Index: <T>/project/test_app.py
+===================================================================
+--- <T>/project/test_app.py
++++ <T>/project/test_app.py
+@@ -2,4 +2,6 @@
+ from app import parse_tags
+ class Tags(unittest.TestCase):
+     def test_single(self):
+         self.assertEqual(parse_tags("a"), ["a"])
++    def test_design_input(self):
++        self.assertEqual(parse_tags(" b, a, b, ,"), ["b", "a", "b"])
+
+[0m
+[0m# [0mTodos
+[✓] 按需求契约实现 app.py 的 parse_tags(逗号分割、trim、去空项、保序保留重复)
+[✓] 在 test_app.py 补充设计要求的原始输入断言 " b, a, b, ," -> ["b","a","b"]
+[•] 运行 python3 -B -m unittest -v 验证
+[ ] 收口回写:designs/tags.md 最终方案与证据、design.md MVP 状态、handoff.md 状态与提交决定;处置外部审查建议(延后);移除已结束 plans/tags.md
+[0m
+[0m$ [0mpython3 -B -m unittest -v
+test_design_input (test_app.Tags.test_design_input) ... ok
+test_single (test_app.Tags.test_single) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+[0m
+[0m$ [0mpython3 -B -c 'from app import parse_tags; print(parse_tags(" b, a, b, ,"))'
+['b', 'a', 'b']
+[0m
+[0m← [0mWrite docs/designs/tags.md
+Wrote file successfully.
+[0m
+[0m← [0mWrite docs/design.md
+Wrote file successfully.
+[0m
+[0m← [0mWrite docs/handoff.md
+Wrote file successfully.
+[0m
+[0m$ [0mrm plans/tags.md && ls plans 2>/dev/null || echo "plans 目录已空或不存在"
+(no output)
+[0m
+[0m$ [0mgit status --short && echo "---DIFFSTAT---" && git diff --stat
+M app.py
+ M docs/design.md
+ M docs/designs/tags.md
+ M docs/handoff.md
+ D docs/plans/tags.md
+ M test_app.py
+---DIFFSTAT---
+ app.py               |  2 +-
+ docs/design.md       |  2 +-
+ docs/designs/tags.md | 23 ++++++++++++++++++++++-
+ docs/handoff.md      |  2 +-
+ docs/plans/tags.md   |  6 ------
+ test_app.py          |  2 ++
+ 6 files changed, 27 insertions(+), 10 deletions(-)
+[0m
+[0m# [0mTodos
+[✓] 按需求契约实现 app.py 的 parse_tags(逗号分割、trim、去空项、保序保留重复)
+[✓] 在 test_app.py 补充设计要求的原始输入断言 " b, a, b, ," -> ["b","a","b"]
+[✓] 运行 python3 -B -m unittest -v 验证
+[✓] 收口回写:designs/tags.md 最终方案与证据、design.md MVP 状态、handoff.md 状态与提交决定;处置外部审查建议(延后);移除已结束 plans/tags.md
+[0m

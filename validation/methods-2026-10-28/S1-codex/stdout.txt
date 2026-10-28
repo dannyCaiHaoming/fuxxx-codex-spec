@@ -1,0 +1,10 @@
+已完成待审文档：
+
+- [总 design](fucxxx-codex-spec/design.md)
+- [当前 MVP 子 design](fucxxx-codex-spec/designs/local-tasks.md)
+- [实施 plan](fucxxx-codex-spec/plans/local-tasks-impl.md)
+- [恢复交接](fucxxx-codex-spec/handoff.md)
+
+建议本轮**不加入插件加载器**：它不影响当前持久化验收，README 也明确将插件框架延后；真正需要第三种存储时再评估。
+
+请重点审阅建议的 JSON 存储、递增整数 ID、串行读写和错误语义。文档链接检查通过；代码、测试未修改，产品测试未运行。等待你确认后再开发。

@@ -8,7 +8,7 @@ approval: never
 sandbox: read-only
 reasoning effort: none
 reasoning summaries: none
-session id: 01a17e31-5751-7210-8ebf-3c626f3a65c6
+session id: <redacted>
 --------
 user
 这个项目已经按项目指令采用 fucxxx-codex-spec。请按项目指令找到并实际读取它的主入口 SKILL.md，再按其中「能力读取」找到 design 能力并实际读取。只回答三行：第一行是主入口 SKILL.md 的绝对路径；第二行是 design 能力 SKILL.md 的绝对路径；第三行是你按「能力读取」第几级找到 design 能力的（1、2 或 3）。不要创建或修改任何文件。

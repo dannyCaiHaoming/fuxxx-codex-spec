@@ -1,0 +1,1333 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: <T>/project
+model: gpt-6-astra
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: none
+session id: <redacted>
+--------
+user
+根据 README 写出任务清单的总 design、当前 MVP 子 design 和实施 plan，先交给我审阅，等我确认再开发。设计上也请评估旧架构笔记提到的插件加载器是否要放进本轮。
+2026-10-28T00:37:44.702993Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 426 Upgrade Required, url: ws://127.0.0.1:15721/v1/responses
+codex
+我会先读取 README、旧架构笔记和现有项目资料，使用 fucxxx-codex-spec 的设计与计划流程形成待审阅文档；本轮不开发代码，并评估插件加载器是否属于当前 MVP。
+
+exec
+/bin/zsh -lc "pwd; git status --short; rg --files -g '*.md' -g '"'!node_modules'"'" in <T>/project
+ succeeded in 0ms:
+<T>/project
+AGENTS.md
+README.md
+
+exec
+/bin/zsh -lc 'cat /Users/caihaoming/.codex/skills/fucxxx-codex-spec/SKILL.md /Users/caihaoming/.codex/plugins/cache/superpowers-dev/superpowers/7.0.0/skills/using-superpowers/SKILL.md' in <T>/project
+ succeeded in 0ms:
+---
+name: fucxxx-codex-spec
+description: 用于用户要求采用 fucxxx-codex-spec，或在已采用该范式的项目中开展设计、MVP 拆分、计划、开发、复核、恢复与收口。适用于需要跨会话保持目标和开发状态的 Agent、前后端及工具项目；普通问答不初始化流程，小修改走轻量路径。
+---
+
+# fucxxx-codex-spec
+
+以当前交付目标为准：总 design 提取 MVP，plan 安排必要工作，执行证据经复核回补设计。项目文件用于恢复；判断以真实代码、运行状态和验证结果为准。
+
+## 先确定本次任务
+
+用户明确要求采用本 Skill，或有效项目指令已声明采用且本次属于相关开发工作时，按下表分流。触发只决定用这套方法判断和推进；建立哪些资料、做到哪一步，由本次请求按「交付终点」决定。
+
+核对项目根、适用指令、已有资料及相关未提交改动。资料根采用项目已确认的路径，默认 `<项目根>/fucxxx-codex-spec/`。**本 Skill 包与项目资料目录用途不同**：项目进度只写进项目资料根；遇到同名目录，先辨明它是 Skill 包还是项目资料，再决定是否写入。
+
+| 当前请求 | 处理与按需阅读 |
+| --- | --- |
+| 正式采用、修复项目接入 | 读取 `fucxxx-codex-spec-init`；有接入授权才合并 AGENTS.md、按需建立资料。 |
+| 需求澄清、总设计、MVP 或设计审阅 | 读取 `fucxxx-codex-spec-design`；只处理当前交付。 |
+| 编写／审阅实施或验证 plan | 读取 `fucxxx-codex-spec-plan`；关键设计未定时先补设计。 |
+| 实施、委派、恢复 | 读 [执行与恢复](references/execution.md)（执行参考）的对应部分，再读取指定设计和存在的活动 plan。 |
+| 复核、回写、收口、提交 | 读 [复核与收口](references/closeout.md)（收口参考）的对应部分。 |
+| 小修复、文案或简单配置 | 核对相关约束后直接修改、验证；MVP、plan 和子会话只在确有设计决策或交接需要时建立。 |
+| 只读分析、审阅 | 选读相关参考与项目证据，报告结论；资料过期也只报告差异，不写入文件。 |
+| 普通问答 | 直接回答。 |
+
+“这次按方法做”属于临时使用：走对应阶段，AGENTS.md 保持原样。已接入项目的日常工作直接分流，无需读取接入能力。已有资料直接复用：已有设计直接进入计划，已有活动 plan 直接恢复执行，小改动不加载设计与计划能力。已读取且仍适用的内容无需重复加载。
+
+## 共同底线
+
+以下条目只在此处维护。init、design、plan 三个能力和两份参考按条目名引用，不另写一份。
+
+**能力读取**　本 Skill 按需读取 init、design、plan 三个阶段能力，它们也要读取本入口。查找任一入口按此顺序：
+
+1. 有效 AGENTS.md 登记的 Skill 包根或具体入口；
+2. 宿主提供的可读取入口或已发现的能力名称；
+3. 并列布局：主入口读 `../fucxxx-codex-spec-<能力>/SKILL.md`，阶段能力读 `../fucxxx-codex-spec/SKILL.md`。四个目录同在一处时成立，例如本仓库内，或一同装进宿主的同一 skills 目录；分开安装时不成立。
+
+实际读取成功才算已加载；名称、登记行和分流表只是查找线索。本次核实的包根与能力入口记入 handoff；登记缺失或过期时，在接入授权下由 init 补登记。阶段能力读取本入口是为了取得这些共同底线，读完即按自身步骤执行。
+
+**缺口处理**　能力、入口、资料、权限、环境不可用，或关键契约不明时：说明具体缺口，继续不依赖它的授权工作，只暂停受影响部分；需要用户补充时提出具体选择。缺失的能力不要凭记忆复刻其流程，也不要声称已加载或已执行。
+
+**交付终点**　由本次请求决定。只审阅就只读并报告。只写设计或计划就在文档边界交付；留有待审阅、待验证或待实施工作时，按 [设计与计划](references/design-and-plan.md) 的规则更新 handoff。要求开发完成且授权充分时，连续完成必要的设计、计划、实施、验收和收口：写完文档或子会话返回都继续推进，直到用户指定的审阅点或本次交付完成。只为当前 MVP 写计划。暂停与恢复条件见执行参考“分派与执行”。
+
+**范围依据**　用户已确认的目标、验收和后续明确决定是范围的唯一依据。每项新增工作都要直接服务当前验收、必要依赖或已确认约束；未来增强记为候选或延后。缩小范围时保留已确认职责、原失败样例和验收。Agent 自行改写的 design／plan、评审建议，以及“继续执行”这类授权，都不单独构成扩张授权。逐项判断见设计参考“提取当前 MVP”；连续发现关联问题时的累计范围复核见收口参考“复核与返工”。
+
+**阶段衔接**　阶段能力完成后交回：产物链接、已定范围、未决项、停点，以及原授权允许继续到哪里。主会话据此按原请求继续，或在交付终点停止；已完成的阶段不重复执行。切换能力既不是审批点，也不扩大原授权。
+
+**资料归属**　项目只有一套动态状态：总 design、子 design、活动 plan、handoff 与证据；模板由本包 `assets/` 维护。各阶段能力把产物写进项目既有资料位置，复用同一 handoff，不另建目录或台账。主区权威设计和 handoff 由主会话回写。
+
+**提交与外部操作**　commit、push、发布、安装、在业务项目启用、调用外部服务，各自需要用户授权，彼此独立。已有决定照做；用户明确暂不提交就保留本地，不再催问；尚无决定的开发工作在收口后一次问清。只写设计或计划的任务不要求提交业务项目。选用任何能力都不触发 commit，执行 plan 也不逐任务提交。提交内容的核对见收口参考“提交范围”。
+
+**结果如实**　通过、部分通过、失败与未知分别报告，并注明证据层次。读取、派单和自报完成都只是线索，验收以实际证据为准；子区通过不代替主区集成结果。主会话自己检查时注明是自检。无委派能力时由主会话执行或说明限制；子会话、归档和清理状态按实际情况报告。
+
+## 从正确位置继续
+
+- 恢复在途工作：读现存 `handoff.md`，取其中登记的入口，按索引选读总 `design.md`、当前子设计和活动 plan；已有明确派单时直接读指定资料并核对基线。登记入口失效时按「能力读取」重新查找，并说明差异。
+- handoff 缺失时先查已有资料再判断状态，没有 handoff 不代表首次采用。状态与实际冲突时指出差异；本次含维护或开发授权才修正。
+- 阶段、范围、代码基线变化或上下文压缩后，回读当前目标、约束和进度，核对实际差量与会话状态，按需选读；在途工作先查实际状态，再决定是否派单。
+- 用户最新要求改变目标或契约时，先明确它对设计和计划的影响。普通范围内的实现选择自行处理；重大取舍交主会话或用户，契约变化先写进设计再改代码。
+
+## 信息放在哪里
+
+| 位置 | 负责内容 |
+| --- | --- |
+| 有效 AGENTS.md | 采用声明、Skill 主入口、包根与阶段能力入口、资料根、读取与恢复要求；本轮进度放在项目资料里。 |
+| 现有 README／索引或总设计导航区 | 何时读取、链接、简短状态和验证边界；设计全文留在 design。 |
+| `design.md` | 整体目标、架构、不变条件、MVP 关系与能力摘要。 |
+| `designs/` | 各 MVP 的范围、接口、未知、验收及最终结论。 |
+| `plans/` | 临时验证／实施安排及执行结果；设计契约以 design 为准。 |
+| `handoff.md` | 主会话维护的当前焦点、活动工作、阻塞和下一步。 |
+| 已有证据位置或 `evidence/` | 支撑结论的必要记录；复用既有测试／CI／报告，只保存定位问题所需的部分。 |
+
+文件名默认用能力短名：子设计 `designs/<短名>.md`，计划 `plans/<短名>-<用途>.md`（同一 MVP 同时有验证和实施计划时用途加以区分，例如 `export-check`、`export-impl`），证据 `evidence/<短名>-<主题>.md`。MVP 编号只写在文档标题里，不进文件名，重新排序时链接不会失效。项目已有命名约定时沿用。
+
+模板按需使用：[总设计](assets/master-design.template.md)、[MVP 子设计](assets/mvp-design.template.md)、[Plan](assets/plan.template.md)、[Handoff](assets/handoff.template.md)。它们是按需裁剪的内容契约：替换占位内容与路径，保留当前目标、范围、验收和证据边界。
+
+## 方法要点
+
+问题先用用户结果定义，再依据事实选择能改变原因或关键缺口的作用点，候选实现留作候选。设计与计划写清作用机制；复核区分止损、原因修复与后果恢复，症状消失本身不证明原因已消除。证据足以选择可控、可验证的方案，或到达投入边界时，就停止调查。具体方法见设计参考。
+
+主会话负责设计、关键取舍、复核、整合及权威回写；子会话在指定位置交付结果。委派遵循用户和宿主授权；独立上下文不等于独立工作区，写入归属按执行参考明确。存在 design／plan 或委派工作时，按收口参考完成复核、回写、索引同步、结果保存、已结束 plan 移除及安全清理；轻量任务只更新实际受影响的记录。
+
+本包依据设计草案 v0.4 提炼，核心方法自包含，运行不依赖外部 Superpowers。
+---
+name: using-superpowers
+description: Use when starting any conversation - establishes how to find and use skills, requiring skill invocation before ANY response including clarifying questions
+---
+
+<SUBAGENT-STOP>
+If you were dispatched as a subagent to execute a specific task, ignore this skill.
+</SUBAGENT-STOP>
+
+<EXTREMELY-IMPORTANT>
+If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
+
+IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
+
+This is not negotiable. You cannot rationalize your way out of this.
+</EXTREMELY-IMPORTANT>
+
+## The Rule
+
+**Invoke relevant or requested skills BEFORE any response or action** — including clarifying questions, exploring the codebase, or checking files. If it turns out wrong for the situation, you don't have to use it.
+
+**Before entering plan mode:** if you haven't already brainstormed, invoke the brainstorming skill first.
+
+Then announce "Using [skill] to [purpose]" and follow the skill exactly. If it has a checklist, create a todo per item.
+
+## Skill Priority
+
+When multiple skills apply, process skills come first — they set the approach, then implementation skills (frontend-design, etc.) carry it out. Brainstorming and systematic-debugging are Superpowers' most common process skills, but the rule holds for any of them.
+
+- "Let's build X" → superpowers:brainstorming first, then implementation skills.
+- "Fix this bug" → superpowers:systematic-debugging first, then domain skills.
+
+## Red Flags
+
+These thoughts mean STOP—you're rationalizing:
+
+| Thought | Reality |
+|---------|---------|
+| "This is just a simple question" | Questions are tasks. Check for skills. |
+| "I need more context first" | Skill check comes BEFORE clarifying questions. |
+| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
+| "I can check git/files quickly" | Files lack conversation context. Check for skills. |
+| "Let me gather information first" | Skills tell you HOW to gather information. |
+| "This doesn't need a formal skill" | If a skill exists, use it. |
+| "I remember this skill" | Skills evolve. Read current version. |
+| "This doesn't count as a task" | Action = task. Check for skills. |
+| "The skill is overkill" | Simple things become complex. Use it. |
+| "I'll just do this one thing first" | Check BEFORE doing anything. |
+| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
+| "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+
+## Platform Adaptation
+
+If your harness appears here, read its reference file for special instructions:
+
+- Claude Code: `references/claude-code-tools.md`
+- Codex: `references/codex-tools.md`
+- Pi: `references/pi-tools.md`
+- Antigravity: `references/antigravity-tools.md`
+- Hermes Agent: `references/hermes-tools.md`
+- Muse: `references/muse-tools.md`
+
+## User Instructions
+
+User instructions (CLAUDE.md, AGENTS.md, GEMINI.md, etc, direct requests) take precedence over skills, which in turn override default behavior. Only skip skill workflows or instructions when your human partner has explicitly told you to.
+
+exec
+/bin/zsh -lc "rg -n 'fucxxx|fuxxx' /Users/caihaoming/.codex/memories/MEMORY.md" in <T>/project
+ succeeded in 0ms:
+216:# Task Group: fucxxx-codex-spec project-fit assessment and Git delivery
+218:scope: Use for read-only fit assessment of the fucxxx-codex-spec workflow in pentest-agent, or for authorized delivery of already committed fuxxx-codex-spec changes.
+219:applies_to: cwd=/Users/caihaoming/Documents/fuxxx-codex-spec; reuse_rule=repository layouts, handoff freshness, ref hashes, and worktree state are time-specific; inspect the target repository and authorization before edits or delivery.
+221:## Task 1: Assess fucxxx-codex-spec fit for pentest-agent
+225:- rollout_summaries/2026-10-23T15-59-31-FtQ1-pentest_agent_fit_and_push_local_commits.md (cwd=/Users/caihaoming/Documents/fuxxx-codex-spec, rollout_path=/Users/caihaoming/.codex/sessions/2026/10/27/rollout-2026-10-27T23-44-52-01a1697d-24aa-77e1-b614-5492560557d5_01a17dd2-3c18-7db0-90cf-76d9d545a75d.jsonl, updated_at=2026-10-27T15:03:42+00:00, thread_id=01a1697d-24aa-77e1-b614-5492560557d5, success; read-only targeted assessment)
+231:## Task 2: Push all locally committed fuxxx-codex-spec changes
+235:- rollout_summaries/2026-10-23T15-59-31-FtQ1-pentest_agent_fit_and_push_local_commits.md (cwd=/Users/caihaoming/Documents/fuxxx-codex-spec, rollout_path=/Users/caihaoming/.codex/sessions/2026/10/27/rollout-2026-10-27T23-44-52-01a1697d-24aa-77e1-b614-5492560557d5_01a17dd2-3c18-7db0-90cf-76d9d545a75d.jsonl, updated_at=2026-10-27T15:03:42+00:00, thread_id=01a1697d-24aa-77e1-b614-5492560557d5, success; four commits pushed and refs matched)
+245:- rollout_summaries/2026-10-23T16-41-20-BwPQ-initialize_and_push_fuxxx_codex_spec.md (cwd=/Users/caihaoming/Documents/fuxxx-codex-spec, rollout_path=/Users/caihaoming/.codex/sessions/2026/10/24/rollout-2026-10-24T01-41-20-01a169a3-6eb3-7331-9324-6775df5c22b6.jsonl, updated_at=2026-10-25T14:04:36+00:00, thread_id=01a169a3-6eb3-7331-9324-6775df5c22b6, success; initial draft `30f8e6f` pushed)
+
+exec
+/bin/zsh -lc "cat README.md AGENTS.md; rg --files --hidden -g '"'!.git'"'; git rev-parse --show-toplevel; git log -1 --oneline" in <T>/project
+ succeeded in 0ms:
+# 本地任务清单
+目标：用户能增加任务并在重新打开后读回。Python 标准库即可，数据文件由调用者指定。
+当前 MVP：add_task(path, title) 返回含 id、title 的 dict；list_tasks(path) 返回列表。标题去首尾空白后不能为空，空标题抛 ValueError 且不写文件；文件不存在时列表为空；UTF-8 保存中文。id 在同一文件中唯一。
+后续候选：通知中心、插件框架、多人权限服务，不属于当前 MVP。旧架构笔记认为最好先做插件加载器，可在真正需要第三种存储时重新考虑。
+运行测试：python3 -B -m unittest -v。
+# 项目说明
+
+## 使用 fucxxx-codex-spec 开发
+
+本项目采用 fucxxx-codex-spec。涉及设计、计划、实施、复核、恢复或收口时，
+即使用户未点名，也使用该 Skill 分流；小修改只核对约束并修改、验证，
+design／plan 按需建立。普通问答直接回答。
+Skill 入口：/Users/caihaoming/.codex/skills/fucxxx-codex-spec/SKILL.md。
+Skill 包根：/Users/caihaoming/.codex/skills。
+阶段能力入口：同包根。
+项目资料根：fucxxx-codex-spec/。
+
+- 开始相关工作时读 Skill 所需内容，按任务选读现存 handoff、索引、相关 design
+  和活动 plan；已有明确派单时直接读指定资料。执行与恢复方法以 Skill 为准。
+- 需要阶段能力时按上述登记位置解析并实际读取；读取成功才算已加载，
+  解析不到就报告缺口。
+- 阶段、范围、基线变化或上下文压缩后，以项目文件和实际状态为准回读相关目标、
+  约束和进度，按需选读。
+- 遵守用户当前授权：只读任务只报告。入口或资料缺失时说明缺口，继续不受影响的
+  授权工作；关键契约不明时暂停受影响实施；安装与重新初始化需要用户授权。
+
+## 样例约束
+
+当前项目只允许离线标准库操作，不安装、不 push，不修改本目录以外的资料。
+test_app.py
+AGENTS.md
+app.py
+README.md
+<T>/project
+8eeac28 initial sample state
+
+exec
+/bin/zsh -lc 'cat /Users/caihaoming/.codex/skills/fucxxx-codex-spec-design/SKILL.md /Users/caihaoming/.codex/skills/fucxxx-codex-spec-plan/SKILL.md /Users/caihaoming/.codex/skills/fucxxx-codex-spec/references/design-and-plan.md' in <T>/project
+ succeeded in 0ms:
+---
+name: fucxxx-codex-spec-design
+description: 为 fucxxx-codex-spec 项目澄清需求、比较方案、形成总设计与当前 MVP，或复核设计是否足以计划。复用已确认需求，不对小修改强制提问或建文档；不负责正式项目接入。
+---
+
+# 设计能力
+
+输入是用户本次请求、已确认决定、现有项目证据及交付终点；输出是足以支持下一步的设计或明确的待决问题。实施授权仍由原请求决定。
+
+## 读取与分流
+
+先按主入口「能力读取」实际读取主 Skill `fucxxx-codex-spec`（本仓库内为 `../fucxxx-codex-spec/SKILL.md`）及其 `references/design-and-plan.md`，使用其中的共同底线、问题定位、MVP 和文档恢复规则。直接调用本能力时同样如此。主入口不可用时按「缺口处理」继续可做的只读调查；此时没有共同底线可依，项目契约一律留作待定。
+
+请求已足够明确就直接使用已有答案。小改动走主入口轻量路径，只读审阅只报告，正式接入交给 init；本能力不修改 AGENTS.md。
+
+## 从真实需要形成方案
+
+1. 读取当前场景、实现与失败证据，按设计参考区分背景、目的、限制及候选原因。能从项目读到的事实先调查。需求仍不清时，一次只问最影响方案的问题，例如“最近一次遇到这个问题时，你在做什么、希望最后得到什么？”；已有答案直接沿用。
+2. 明确成功结果、非目标及“即使程序能运行也算失败”的情形。核对平台、接口、资源等选择由谁决定：用户已定的保留；普通内部选择自行处理；影响产品目标或成本的待决项，给出具体推荐与代价。Agent 的默认值标为建议，与用户决定分开记录。
+3. 存在实质取舍时比较少量可行方案，说明各自作用点、证据、代价和未验证假设。依据当前结果选最小真实链路，把作用点放在能改变结果的环节，而不是增加角色、框架或只掩盖症状。已有方案足够时直接采用。
+4. 对会影响方向的理解，用具体场景和结果简短复述。只有缺失答案会实质改变方案时才等待用户，同时继续不受影响的授权工作。
+5. 关键未知使用设计参考的有界验证方法。原型需要相应授权，并说明它证明哪一层、哪些判据未覆盖。原型结果作为证据使用；要转为正式交付，按设计参考重新接入并验收。
+
+### 一个具体例子
+
+用户反馈“订单列表出现重复订单”，并建议“在列表里把重复的过滤掉”。下面是示例写法，不是实际设计记录：
+
+| 设计位置 | 写法 |
+| --- | --- |
+| 背景 | 链路是事件投递 → `receive` → store → 列表与原始导出。同一事件 `e1` 被投递两次，store 里就有两条：是重复写入，不只是重复展示。 |
+| 目的 | 同一事件只对应一条订单，列表和原始导出都正确；金额相同的不同订单要保留。“列表过滤”只是候选实现。 |
+| 限制 | 已确认：投递可能重复，`event_id` 是事件的稳定标识，未知历史数据不清理。可调整：`receive` 目前无条件追加，这只是现有实现。 |
+| 作用点与验证 | 在 `receive` 按 `event_id` 跳过已存事件。原始输入后 store 与列表都应为 2 条，整批重放后仍为 2 条；只在列表过滤会让 store 和导出保持 3 条，因此被这条判据否定。 |
+
+如果 `receive` 是不可改的供应商代码，且用户目标只要求列表正确，那么只在列表去重是合理的止损：设计里写明 store 和导出仍有重复、依赖它们的对账可能重复计数，以及重新处理的前提。止损不能写成原因已消除。
+
+## 总设计与当前 MVP
+
+采用主包的 `assets/master-design.template.md` 与 `assets/mvp-design.template.md`，复用项目既有位置。总设计保留用户结果、组成职责、关键流和不变条件；只细化当前 MVP 的完整可验收链路、必要接口、错误语义和明确非目标，并按可验收能力而非目录结构拆分。
+
+候选实现、已定契约和未来项分开写。提取 MVP 和加入新任务时，按主入口「范围依据」核对用户确认来源。会改变用户可见行为的决定写定在设计里，与之无关的内部细节留给执行者。
+
+## 从实施者角度检查
+
+交付前，以不了解聊天历史的实施者角度阅读设计：如果只能依靠这些文档制定计划，哪些猜测会实质改变结果？核对目标、输入输出、职责、失败行为和验收是否足够；合理的内部选择和措辞偏好可以跳过。
+
+复杂设计且有委派授权与工具时，可让独立评估者只读设计及必要项目证据，返回“必须回答的问题、为何影响计划、重要性”；只给它设计和证据，不附推荐答案。否则自行检查，并按主入口「结果如实」注明是自检；普通设计交付照常进行。
+
+处理检查结果：已有证据能回答的，补入相应段落；普通内部选择自行决定并注明；只有改变目标、契约、验收或成本的实质问题才交给用户。评审建议和反例是否纳入本轮，按主入口「范围依据」判断。
+
+## 返回与继续
+
+按主入口「阶段衔接」交回，并按「交付终点」决定停在哪里：只要求设计就停在设计；明确要求先审阅就停在审阅点；已授权后续工作且条件具备时，由主入口读取计划能力继续。需要恢复时更新同一 handoff。
+
+来源：基于固定的 Superpowers 7.0.0 brainstorming 与 builder check 改编，版权许可见本目录 LICENSE.superpowers。运行只依赖本文与主包共同底线，不调用外部 Superpowers 或其 visual companion。
+---
+name: fucxxx-codex-spec-plan
+description: 将 fucxxx-codex-spec 当前 MVP 的已定设计转为可交接的实施 plan，或为重要未知编写有界验证 plan。检查接口、依赖与验收覆盖；不自行定义新产品契约，不为小修改强制建计划。
+---
+
+# 计划能力
+
+输入是当前目标、权威设计及基线、授权边界；输出是执行者无需重猜设计即可使用的 plan。计划组织执行，设计仍是契约来源。
+
+## 读取与进入条件
+
+按主入口「能力读取」实际读取主 Skill `fucxxx-codex-spec`（本仓库内为 `../fucxxx-codex-spec/SKILL.md`）、其 `references/design-and-plan.md`，以及项目当前设计和已有活动 plan。主入口不可用时按「缺口处理」继续可做的只读分析。
+
+只读审阅只报告；小改动走主入口轻量路径。实施 plan 只承接已定且获授权的部分。发现关键契约缺口时，指出证据与影响并回到设计处理；重要未知写成验证 plan，产品行为留给设计决定。已明确的需求直接沿用。
+
+## 组织可执行任务
+
+使用主包 `assets/plan.template.md`，按主入口「资料归属」保存到既有项目资料位置。先核对真实代码结构、职责和现有测试入口，再安排任务；只列当前需要的修改位置。
+
+每个任务以可观察产出为单位，准备、配置和文档归入它们服务的交付；只在能独立验证且接口清楚时拆开。任务间存在依赖就注明顺序；不同层的半成品归入同一交付，不各自当成 MVP。
+
+让执行者明确以下内容：
+
+- 输入来源、输出使用者，以及跨任务交接的接口名称、参数、返回值、错误语义；设计已固定的值准确传递，其余普通内部细节留给执行者。
+- 涉及文件与直接依赖、为何服务当前目标、改动作用点；范围引用设计。
+- 关键测试输入及断言、实际可运行命令和预期结果。必要时给简短测试示例；常规实现只写判据，不预写完整函数体。尚无测试入口时明确需要建立什么，并把拟建命令标为尚未验证。
+- 新行为或修复如何用失败证据／必要测试确认，再验证实现和约定集成链路。文案等低风险变更按实际价值决定是否测试，验证要能真正区分对错。
+
+每一步都应能落实为有判据的明确行动；“完善处理”“适当测试”这类没有判据的任务要改写。步骤粒度以可验证为准，不限定执行者每次写哪类代码。计划长于设计不自动是错，但大量重复代码或决定不了任何事的文字应删去。
+
+## 自查与交接
+
+完成后对照设计检查：每项当前验收是否有承担任务；上下游接口和值是否一致；原始失败与设计直接蕴含的关键反例是否覆盖；任务输出、验证与结果位置能否对应。只补实际缺口；相邻优化按主入口「范围依据」延后。
+
+修正本 plan 内的普通错误；实质设计变化交主会话更新权威设计及受影响计划。用户已选定执行方式就保留；未指定时，在授权与工具允许范围内选合适方式。派单写入归属、未提交依赖及契约变更后的恢复按主包执行参考处理。
+
+### 一个具体例子
+
+总目标是团队任务管理；当前 MVP 是已登录成员创建任务、列表可见且刷新后保留。保留团队权限、持久化和失败反馈，通知与审批仍为后续候选。
+
+假设设计已明确 `POST /api/teams/:teamId/tasks` 的契约，下面是示例而非实际测试记录：
+
+| Plan 位置 | “创建任务 API”任务 |
+| --- | --- |
+| 工作安排 | 复用登录身份和团队成员校验，接收标题，有权限时保存任务并返回 `201` 和 `id`；结果供页面和列表使用。此任务不实现页面交互。 |
+| 验证方式 | 用真实 API 创建，再从列表读回相同 `id`；跨团队请求返回约定 `403` 且不新增记录。使用测试账号与测试数据库，命令取自项目实际入口。 |
+| 执行结果写法 | 若创建和读回通过，但跨团队请求仍新增记录：记录各自证据，该任务未通过，先修权限路径。页面提交与刷新未验证，不能标记整个 MVP 完成。 |
+
+若执行者提出先做通知中心，按当前 MVP 目标延后。若权限契约未知，先定位或做有界验证，多租户规则由设计决定，而不是由实施会话自行选择。
+
+## 返回与继续
+
+按主入口「阶段衔接」交回 plan 链接、承接的设计范围和剩余关键问题，按「交付终点」决定停在哪里：只写计划或先审阅就在此交付并保存必要 handoff；已授权开发完成且条件具备时，按主包执行参考继续执行，复核按收口参考。plan 是临时物：执行结果按原模板保存，结束后按收口参考回写设计与长期证据，再移除 plan。
+
+来源：基于固定的 Superpowers 7.0.0 writing-plans 改编，版权许可见本目录 LICENSE.superpowers。无外部 superpowers:* 调用，也不依赖其执行脚本、工作区管理或评审账本。
+# 设计与计划
+
+用于总设计、MVP、重要未知和计划任务。本文维护设计／计划的共同方法：问题定位、MVP 范围的逐项判断、未知去向及 handoff 建立条件；授权、交付终点、范围依据等共同底线见主入口。阶段操作分别由 `fucxxx-codex-spec-design` 与 `fucxxx-codex-spec-plan` 维护，按主入口「能力读取」查找。需要派单或恢复时读 [执行与恢复](execution.md)，复核或收口时读 [复核与收口](closeout.md)。
+
+## 形成足以推进的设计
+
+先读已确认需求、相关实现和证据，区分事实、推断、候选和已废弃方案。澄清提问与方案比较的具体做法见 design 能力。
+
+在现有设计段落中用“背景—目的—限制”定位问题，不另建分析表或固定提问轮次：背景写可观察现象、相关链路和已有证据，区分事实与候选原因；目的写用户要获得的结果，不提前等同于重试、增加 Agent 或某种框架；限制区分已确认要求／权限边界与尚可调整的实现习惯、历史假设，并注明必要来源。用户明确选定的方案仍须尊重，不能借重新定义问题擅自替换。
+
+据此说明方案改变哪一环、通过什么机制达成目标，以及什么结果会支持或反驳该判断。优先检查直接上游的数据来源、职责和接口，比较少量可行作用点的效果与总代价；不把“更上游”自动视为更正确。原因不明时做能区分候选解释的最小检查，证据足以选择可控且可验证的方案或到达投入边界就停止调查，不追溯无关历史。MVP 的最小范围是达成当前结果所需的工作，不只是最少修改行数；上游修复也必须遵守已确认范围和契约。
+
+按实际作用区分止损、原因修复与后果恢复，同一方案可以包含其中多项。上游不可控或需先恢复服务时，止损可以是合理交付；说明缓解了什么、原因是否已知／消除、剩余影响及重新处理的前提，不强制把永久修复纳入本轮。只有用户目标与验收本就允许该边界时才可据此收口，不能自行降低要求。小任务用几句话说明即可，明确的原因无需重复研究。
+
+总设计表达用户场景、核心结果、主要组成与职责、关键数据流和接口、不可破坏的约束及整体验收。按可验收能力拆 MVP，可以跨前端、后端、数据和配置；不要把目录或架构章节直接当作交付顺序。
+
+使用 [总设计模板](../assets/master-design.template.md)。只细化当前 MVP，未来保留必要方向和依赖。已有其他规格体系时先复用或给出迁移映射，不能仅因调用 Skill 就建立第二份设计权威。
+
+进入计划的条件：当前目标、范围和可观察验收明确；关键未知已解决，或已有有界验证及各结果的去向。未知部分先做验证 plan，并标明尚未定案。已有实施授权且设计明确时，按主入口「交付终点」直接推进。
+
+设计或 plan 完成后按主入口「交付终点」推进。验证结论足以定案时，可在已有授权内转入实现；仍需实质选择、授权或缺失条件时，按执行参考的暂停与恢复规则处理。
+
+本次获准建立项目设计／计划资料，且留下待审阅、待验证或待实施工作时，由主会话创建或更新资料根的 `handoff.md`，链接实际产物，记录停点、未决问题和授权边界。只交付文档也可能需要恢复入口；结果报告不能替代 handoff。只读请求或用户限定仅输出指定文件时不额外写入，交付时说明尚无恢复入口。
+
+## 提取当前 MVP
+
+使用 [子设计模板](../assets/mvp-design.template.md)，顶部写清总目标关联、一个明确结果、最小验收链、必须保留的职责和本轮不做的事。技术试验可独立验收，但不能因此宣称用户已获得可用产品。
+
+每次提取子设计、写计划、加入新工作、发现反例及复核时，判断：**省略这项会使当前验收失败，或违反已确认约束吗？**
+
+判断依据见主入口「范围依据」。保留这些决定的可定位依据，复用设计中的既有说明或来源引用即可。若文档已被自行扩大，指出差异，并在维护授权内纠正受影响部分：新增内容退回为待确认候选，已有成果保留。
+
+- 会：纳入最小必要范围；实质改变目标、共享接口、验收或成本时说明取舍，由主会话／用户决定。
+- 不会：延后或不记录；只有有价值的延后项才写重新考虑的触发条件。
+- 不确定：做最小检查，不先搭建通用平台或完整治理系统。
+
+缺口会使实际运行违反既定边界时，只暂停受影响运行。
+
+同一子设计可以同时有已定部分、待验证候选和延后项。实现 plan 只承接当前已定且获授权部分；一份 plan 完成不能把整个设计／MVP 标为完成。
+
+分别表达设计、实现、验收、交付状态。例如“方案已定、已整合、静态检查通过但真实入口未验证、本地未提交”。不强制状态机，不把 commit 当成验收。
+
+共享规则由总设计或指定的唯一子设计承载，其余引用。总设计委派的细节以对应子设计为准；改变总设计不变条件须回主会话处理。文档与代码不符时指出差异，不能用文档覆盖事实。
+
+## 重要未知：先验证，再定实现
+
+先在子设计记录问题、为何阻碍当前 MVP、候选方案及代价、最小检查、成立／不成立／证据不足后的去向，再按需写验证 plan。已有资料足以回答时直接调查，不为模板新增研究任务。
+
+验证可以包含获授权的可逆原型。结束于足够支持决策的证据或约定投入边界：
+
+- 成立：回写适用版本、条件和选定契约。
+- 不成立：保留反例，采用备选或调整设计。
+- 不足：写清缺少什么、影响和下一项有价值的检查，不无限研究相邻问题。
+
+原型代码只在选择性复用时进入产品：先核对当前设计与主区基线，接入后完成验收。验证 plan 可结束并删除，MVP 仍可能未完成；删除前按收口参考保存有用判据与结论。
+
+## 写可交接的 plan
+
+具体任务组织、接口自查和交接方法由 `fucxxx-codex-spec-plan` 维护，按主入口能力路由实际读取。使用本包 Plan 模板，计划只承接当前设计；作用点、范围依据、未知去向服从本文，执行服从执行参考，收口服从收口参考。不在此重复另一套任务步骤。
+
+## 小改动与设计变化
+
+文案、简单配置或既定行为修复：核对约束后直接修改和验证；有相关子设计时复用，没有时直接修改。plan、子会话和完整收口只在设计决策、交接或恢复确有需要时增加。
+
+只更新实际受影响的说明、验收结论或限制。一次完成且无待交接状态可直接报告；有在途工作、阻塞或待恢复下一步时由主会话更新 handoff。小改动若变成目标／契约变化，再按重要取舍处理；验收要求不因任务小而降低。
+
+## 方法来源
+
+设计和计划操作依据固定 Superpowers 7.0.0 文件适配进本地 design／plan 能力；用户要求直接使用完整外部 Skill 时的兼容处理见收口参考。
+
+exec
+/bin/zsh -lc 'cat /Users/caihaoming/.codex/plugins/cache/superpowers-dev/superpowers/7.0.0/skills/brainstorming/SKILL.md /Users/caihaoming/.codex/plugins/cache/superpowers-dev/superpowers/7.0.0/skills/writing-plans/SKILL.md' in <T>/project
+ succeeded in 0ms:
+---
+name: brainstorming
+description: "You MUST use this before any creative work - creating features, building components, adding functionality, modifying behavior, or planning anything new, in software or out of it (a talk, a business, a renovation)."
+---
+
+# Brainstorming
+
+You are very good at building. You build what you believe your human
+partner wants, and that belief is usually thinner than it feels. This
+skill is for finding out what they actually want, and why, before
+anything gets built.
+
+People often haven't finished working out what they want. Good questions
+help them think it through. When you understand the why, you make the
+hundred decisions they never mention the way they would have made them.
+
+## First: What Do You Actually Know?
+
+Before you reply, ask yourself: what do I know about what they want, and
+why?
+
+- **Everything that matters is in the request** ("make the icon cornflower
+  blue"). This is a quick, clear task. Do it, and say what you did.
+- **Something non-trivial is missing.** Start the conversation.
+
+## Your First Message
+
+Your first message is two things, in this order:
+
+1. One line letting them know that if they'd rather skip the questions and
+   have you just start, they can say so. If they take you up on it, this
+   skill is done: state any significant how-it-gets-made choice
+   (platform, language, medium) in one plain line, then do what they
+   asked through the normal workflow.
+2. One open question that gets them describing. Ask about a real moment
+   or a concrete picture: "What's the moment you find yourself wishing
+   this existed?" or "Tell me about the people who'll be in the room."
+
+That's the whole message.
+
+## The Conversation
+
+Each message ends with one question: a single sentence with no list of
+example answers hanging off it. Use plain language, pitched just a little
+above where your human partner is. Match their vocabulary; never use
+process jargon.
+
+Be clear and concise. Lead with what matters. Avoid jargon. When you
+report what you found, give them the most important findings and offer
+the rest.
+
+**Get them describing.** Open questions come first. Their own words carry
+intent that your options can't. Offer a short menu only when they're
+stuck. When they say "just guess" or "what do you think?", propose
+something concrete.
+
+**How it gets made.** Every project rests on choices about medium, tools,
+materials, and resources: the platform, programming language, and
+libraries for an app; the medium for a piece of art. Find out early which
+of those choices they want to make, which they're handing to you, and what
+they already have to work with. Someone with strong views or skills will
+want to talk it through. Someone counting on you needs sensible defaults,
+said in plain words. When there's existing work, build on what it already
+uses. Any choice you make goes in the design as your call, never as
+something they agreed to.
+
+**Ground to cover.** This is territory, not a script. Never read these
+out as questions:
+
+- what kind of thing this is, and what makes it special
+- why now, and what success looks like to them
+- goals, non-goals, and anti-goals (what would make this a failure even
+  if it technically works)
+- prior art: what they've seen elsewhere, loved or hated
+- current state: what exists now, what they've tried
+- the details they care about
+
+**Questions that work** anchor in specifics: "Walk me through the last
+time...", "If it could only do one of these well, which?", "What would
+make you wince if I got it wrong?" A guess they can correct ("I'm
+guessing this is because X keeps biting you?") often beats a question.
+
+**Offer recon.** Once you have a bit of grounding and looking would help,
+offer to go look: their codebase or project, their own files and data,
+or the web. Say what you'd look for. They decide whether you go.
+
+**Think wide privately.** Before you propose anything, come up with
+several ideas and drop the weak ones, including any that fight what
+they've told you about why. Show the comparison only when it helps them
+decide.
+
+**Show, don't tell.** Offer the visual companion (below) whenever seeing
+would help more than reading:
+
+- something they'll look at: a screen, a page, a printout, a sign
+- a layout or arrangement: of a screen, a room, a schedule
+- a flow or a sequence of steps
+- options that would look different from each other
+- a structure that's easier to see than read: a diagram, a timeline, a map
+
+Once they've accepted, use it for mockups to react to, side-by-side
+options, and throwaway prototypes they can click.
+
+**Spike to feel things out.** Agentic work is waterfall, but very, very
+fast. A quick throwaway build is often the cheapest way to learn what
+they want or whether something works. Offer one when it would help.
+When they just want to spike, get out of the way. Spikes get no tests
+or minimal ones, aren't bulletproof, and skip the plan, implementation,
+and review process. Bring what the spike taught you back into the
+conversation.
+
+## Play It Back
+
+Play back as you go. As soon as you understand one part well enough to
+describe it (what it's for and who it serves, say, or how one piece
+behaves), describe that part back in about 200-300 words, then return to
+questions about the next part. Playback and questions alternate through
+the whole conversation; the last chunk covers whatever is left.
+
+Mark anything you're guessing as your guess; only what they said goes in
+as theirs. End each chunk by asking what's wrong or missing.
+
+Before you send a chunk, check it: does it describe something they'll
+look at, like a page, a screen, a schedule, or a printout? If so, and
+they haven't seen the visual companion offer yet, send the offer instead
+(its own message, below) and hold the chunk for the next message. Once
+they've accepted, put a mockup next to the description.
+
+## Size the Work
+
+Once you understand what they want, pick a size and say it in plain
+words. They can override it.
+
+| Size | The full description | Then |
+|------|----------------------|------|
+| A quick, clear task | the request itself | do it |
+| A small change | in chat | build it through the normal workflow |
+| A project with a written design | a written design document | a full plan (for software: superpowers:writing-plans) |
+
+If it grows mid-task, stop, say so, and step up a size.
+
+If this is really several independent projects, say so, agree on an
+order, and brainstorm them one at a time.
+
+## The Written Design
+
+For a project, write a plain document a talented builder in the domain
+could plan from without going back to your human partner. Cover:
+
+- intent and the why
+- goals, non-goals, anti-goals
+- constraints
+- the parts of the how they decided, as they decided them
+- what's left to the builder
+
+**Where it goes:** in a software repo,
+`docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`, committed.
+Otherwise, ask. Your human partner's preferences override both.
+
+**Builder check:** dispatch a fresh subagent with
+`builder-check-prompt.md` in this directory. When you tell your human
+partner you're writing it up, say a reviewer will read it first and you
+may come back once with a few questions. Don't hand over the document
+until the check is back. Sort what the builder asks into three piles:
+
+- **Answered already** by the conversation or the project: put the answer
+  in the document.
+- **Minor:** a sensible builder could settle it without changing what gets
+  built. Settle it yourself and mark it in the document as your call.
+- **Theirs:** only your human partner can answer it, and the answer changes
+  what gets built.
+
+Bring the "theirs" pile in one message, most important first. Update the
+document with their answers, then hand it over with a short list of the
+calls you made so they can check those while reading. That's the only
+round of questions the check produces. Without a subagent tool, read the
+document as that builder yourself.
+
+<HARD-GATE>
+Nothing gets built until your human partner approves the full
+description: in chat for a small change, the document for a project.
+Building includes writing product code, scaffolding, installing
+dependencies, creating projects, and invoking an implementation skill.
+Reading and exploring are fine.
+
+Two exceptions. If they opted out of the questions, the skill is done
+and the gate goes with it. A spike they said yes to may be built; it
+stays labeled throwaway, and keeping what it produced is a new request
+that comes back through this gate.
+
+After a project's document is approved, the next step is the plan. For
+software, invoke superpowers:writing-plans and no other skill.
+</HARD-GATE>
+
+## Red Flags
+
+| Thought | Reality |
+|---------|---------|
+| "I'll offer options to save them effort" | Options steer. Ask them to describe it first. |
+| "I'll fill in sensible defaults" | Good. Say them out loud. A default they never heard is one they couldn't reject. |
+| "I should explain the process first" | Ask your question. The process shows itself. |
+| "They said 'sounds good' to the idea" | Approval covers what you showed them. A description you haven't written isn't approved. |
+| "The spike works, I'll keep building on it" | Keeping it is a new request. Back through the gate. |
+
+## Visual Companion
+
+A browser tab for showing mockups, diagrams, and prototypes. It's a
+tool, not a mode: accepting it doesn't send every question to the
+browser.
+
+**Offer it just-in-time.** Offer it the first time one of the moments
+above comes up, never upfront. The offer is its own message with nothing
+else in it:
+
+> "This might be easier if I show you. Want me to open a browser tab with some mockups?"
+
+If they decline, stay in text and don't offer again unless they raise it.
+
+**Per question, ask: would they understand this better by seeing it?**
+Mockups, layouts, diagrams, and side-by-side designs go in the browser.
+Requirements, scope, tradeoffs, and conceptual choices stay in text. A
+question about a UI topic isn't automatically a visual question.
+
+If they accept, read `visual-companion.md` in this directory before
+starting the server.
+---
+name: writing-plans
+description: Use when you have a spec or requirements for a multi-step task, before touching code
+---
+
+# Writing Plans
+
+## Overview
+
+Write implementation plans for an engineer who has not seen this codebase or this spec. Assume they write idiomatic code in the project's language once they know the exact interface and the exact test, and that they will make a reasonable choice wherever the plan leaves one open. What they cannot know is what you decided: which files, which names and signatures, which values from the spec, which tests prove each task. Document those. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+
+**Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
+
+**Context:** If working in an isolated worktree, it should have been created via the `superpowers:using-git-worktrees` skill at execution time.
+
+**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+- (User preferences for plan location override this default)
+
+## Scope Check
+
+If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+
+## File Structure
+
+Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+
+- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
+- You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
+- Files that change together should live together. Split by responsibility, not by technical layer.
+- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+
+This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+
+## Task Right-Sizing
+
+A task is the smallest unit that carries its own test cycle and is worth a
+fresh reviewer's gate. When drawing task boundaries: fold setup,
+configuration, scaffolding, and documentation steps into the task whose
+deliverable needs them; split only where a reviewer could meaningfully
+reject one task while approving its neighbor. Each task ends with an
+independently testable deliverable.
+
+## Step Granularity
+
+**Each step is one action with a checkable result:**
+- "Write the failing test" - step
+- "Run it to make sure it fails" - step
+- "Implement the minimal code to make the test pass" - step
+- "Run the tests and make sure they pass" - step
+- "Commit" - step
+
+## Plan Document Header
+
+**Every plan MUST start with this header:**
+
+```markdown
+# [Feature Name] Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** [One sentence describing what this builds]
+
+**Architecture:** [2-3 sentences about approach]
+
+**Tech Stack:** [Key technologies/libraries]
+
+**Spec:** [path to the spec/design doc this plan implements — the plan
+argues from the spec, so the spec travels with it; executors read both]
+
+## Global Constraints
+
+[The spec's project-wide requirements — version floors, dependency limits,
+naming and copy rules, platform requirements — one line each, with exact
+values copied verbatim from the spec. Every task's requirements implicitly
+include this section.]
+
+## Review Focus
+
+[The five input classes or failure modes the spec implies but no task's
+tests exercise that are most likely to bite a person using this software
+— one line each, naming the input or condition and the behavior a
+reasonable person would expect, most likely first. The spec is a vision
+document: it says what the software must do, not everything it will
+meet, and its silence on an input is not permission for that input to
+break the program. Write the list here, once, with the spec in front of
+you. Then, for each line, add the test that pins it to the task that
+owns the code, in that task's own step style.]
+
+---
+```
+
+## Task Structure
+
+````markdown
+### Task N: [Component Name]
+
+**Files:**
+- Create: `exact/path/to/file.py`
+- Modify: `exact/path/to/existing.py:123-145`
+- Test: `tests/exact/path/to/test.py`
+
+**Interfaces:**
+- Consumes: [what this task uses from earlier tasks — exact signatures]
+- Produces: [what later tasks rely on — exact function names, parameter
+  and return types. A task's implementer sees only their own task; this
+  block is how they learn the names and types neighboring tasks use.]
+
+- [ ] **Step 1: Write the failing test**
+
+```python
+def test_specific_behavior():
+    result = function(input)
+    assert result == expected
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: FAIL with "function not defined"
+
+- [ ] **Step 3: Implement `function(input: InputType) -> ResultType` in `exact/path/to/file.py`**
+
+One line on the approach when the signature and the test leave a choice
+(which library call, which data structure); a code block only for an
+algorithm they do not determine.
+
+- [ ] **Step 4: Run test to verify it passes**
+
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: PASS
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add tests/path/test.py src/path/file.py
+git commit -m "feat: add specific feature"
+```
+````
+
+## What a Step Contains
+
+A step is done when the implementer can write exactly one reasonable thing
+from it. That is the whole requirement: unambiguous, not complete. Each kind
+of step carries what makes it unambiguous and nothing more:
+
+- **A test step:** the test's name and its assertions, as code, with the
+  spec's exact values in them.
+- **A code step:** the exact signature (name, parameters, return type), the
+  file it lives in, and the specific values the spec pins. The implementer
+  writes the body. A body appears only for an algorithm the signature and
+  tests do not determine, or for exact copy the spec fixes.
+- **A verification step:** the command to run and the output that means it
+  passed.
+- **A reference to another task:** that task's Interfaces block says what
+  to use; the plan does not repeat that task's code.
+
+A plan is the set of decisions the implementer cannot make alone. A plan
+longer than the code it describes has written the code instead. Lines that
+decide nothing ("TBD", "handle edge cases", "add appropriate validation",
+"write tests for the above", a type or function no task defines) are the
+opposite failure, and the self-review catches both.
+
+## Self-Review
+
+After writing the complete plan, look at the spec with fresh eyes and check the plan against it. This is a checklist you run yourself — not a subagent dispatch.
+
+**1. Spec coverage:** Skim each section/requirement in the spec. Can you point to a task that implements it? List any gaps.
+
+**2. Step scan:** Every step must let the implementer write exactly one reasonable thing, and no step may carry more than that: a line that decides nothing is a gap, a function body the signature and tests already determine is a transcript. Fix both.
+
+**3. Type consistency:** Do the types, method signatures, and property names you used in later tasks match what you defined in earlier tasks? A function called `clearLayers()` in Task 3 but `clearFullLayers()` in Task 7 is a bug.
+
+**4. Review Focus:** For each input class or failure mode the spec implies, is there a task whose tests exercise it? The five uncovered ones most likely to bite a person go in the Review Focus section, and each line there gets its test added to the owning task. An empty section means you checked and found none, not that you skipped the check.
+
+**5. Proportion:** Compare the plan's length to the spec's. A plan several times longer than the spec it implements is a transcript of the program, not a plan. If code blocks are most of the document, replace bodies with signatures, test names and assertions, and check that each step is still unambiguous.
+
+If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
+
+## Execution Handoff
+
+After saving and self-reviewing the plan, link it for your human partner
+to read. If they have already explicitly supplied an execution method, ask
+them to review the plan and confirm it captures what they want; wait for that
+review before implementation, then use the preserved method. Otherwise, ask
+them to review the plan and choose an execution method before implementation.
+
+**When no execution method has already been supplied:**
+
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Please review the plan. Which execution approach would you prefer?**
+
+- **Subagent-driven** - A fresh subagent implements each task and a fresh reviewer checks it before the next one starts, then a whole-branch review at the end. Most thorough; costs a fresh context per task and per review.
+- **Native** - I implement every task myself in this session, the way this harness runs work, then one fresh reviewer on the most capable model checks the whole branch. Cheapest and fastest; no independent review until the end. Runs well with a mid-tier session model, since the plan carries the design.
+
+**For this plan I recommend <one of the two>, because <one sentence from the plan: how much the tasks depend on each other's interfaces, how many there are, what a shipped mistake would cost>. Does the plan capture what you want, and which approach should we use?"**
+
+**When an execution method has already been supplied:**
+
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Please review the plan. Does it capture what you want?"**
+
+**If Subagent-driven chosen:**
+- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
+
+**If Native chosen:**
+- **REQUIRED SUB-SKILL:** Use superpowers:executing-plans
+
+exec
+/bin/zsh -lc 'cat app.py test_app.py /Users/caihaoming/.codex/skills/fucxxx-codex-spec/assets/master-design.template.md /Users/caihaoming/.codex/skills/fucxxx-codex-spec/assets/mvp-design.template.md /Users/caihaoming/.codex/skills/fucxxx-codex-spec/assets/plan.template.md /Users/caihaoming/.codex/skills/fucxxx-codex-spec/assets/handoff.template.md' in <T>/project
+ succeeded in 0ms:
+def add_task(path, title):
+    raise NotImplementedError
+
+def list_tasks(path):
+    raise NotImplementedError
+import unittest, tempfile
+from pathlib import Path
+from app import add_task, list_tasks
+class Tasks(unittest.TestCase):
+ def test_roundtrip(self):
+  with tempfile.TemporaryDirectory() as t:
+   p=Path(t)/'tasks.json'
+   self.assertEqual(list_tasks(p), [])
+   a=add_task(p,' 中文任务 '); b=add_task(p,'second')
+   self.assertEqual(a['title'],'中文任务'); self.assertNotEqual(a['id'],b['id'])
+   self.assertEqual(list_tasks(p),[a,b])
+ def test_blank(self):
+  with tempfile.TemporaryDirectory() as t:
+   p=Path(t)/'tasks.json'
+   with self.assertRaises(ValueError): add_task(p,'  ')
+   self.assertFalse(p.exists())
+if __name__=='__main__': unittest.main()
+# <项目名称>：总设计
+
+设计状态：<草案／当前范围已定／部分待决>
+更新时间：<日期与时区>
+
+## 产品目标
+- 用户与场景：
+- 最终要完成的核心结果：<描述用户获得的结果，不把候选实现预设为需求>
+- 如何观察用户目标成立：
+- 当前不解决的问题：
+
+## 当前整体位置
+- 当前主攻 MVP：<链接>
+- 现在已经可用的能力：
+- 仍未打通的直接链路：
+- 当前运行／交付限制：
+- 推进位置与会话：见 handoff.md
+
+## 文档导航
+<已有文档索引时仅链接该入口；否则在这里维护下表，不保留两份导航。>
+| 何时读取 | 文档／章节 | 简短状态与关键未验证边界 |
+| --- | --- | --- |
+
+这里只帮助选读；详细结论以对应设计为准，历史事项不自动转为当前任务。
+
+## 整体设计
+- 关键组成、职责和业务／数据流：
+- 共享接口及其权威定义位置：
+- 已确认且各 MVP 必须保留的要求：<注明必要来源；区分硬约束与可调整的历史实现假设>
+- 现有能力与复用方向：
+
+## MVP 划分
+| MVP 与子设计 | 最小可交付结果 | 直接依赖 | 设计／实现／验收状态 | 关键限制 |
+| --- | --- | --- | --- | --- |
+| <链接> | <可观察结果> | <已具备／仍缺> | <分别说明> | <不夸大完成范围> |
+
+当前 MVP 之外只保留必要方向，不预写所有实施步骤。
+
+## 跨 MVP 决策与待决项
+| 问题 | 当前决定或候选 | 依据与条件 | 影响范围／何时必须解决 |
+| --- | --- | --- | --- |
+
+## 整体验收与交付
+- 产品级成功条件及证据要求：
+- 当前已证明到哪一层：
+- 未验证／失败／受阻：
+- 提交、推送、发布状态：
+
+## 重要回写
+只记录会改变后续开发判断的决策变更、理由与证据链接。
+实际结论同步修改上文相关段落，不在此另存一份矛盾现状。
+# MVP <编号>：<能力名称>
+
+总设计依据：<总 design 的相关段落链接>
+设计：<状态>；实现：<状态>；验收：<层次与状态>
+更新时间：<日期与时区>
+
+## 当前核心目标
+- 服务总设计的目标：
+- 本 MVP 要交付的一个明确结果：
+- 最小验收链路：<真实入口 → 关键行为 → 可观察结果>
+- 必须保留的职责、正确性和边界：
+- 本次不做：
+
+## 现状与直接缺口
+- 已有实现和已成立的验证：
+- 可以复用的能力及适用条件：
+- 当前目标仍缺的接口／行为：
+- 已知失败、推断和未知分别是什么：<原始现象、相关链路及原因证据；未证实的原因保持为假设>
+- 重要方案取舍及理由：<改变哪一环、如何达成目标、为何选择该作用点；存在实质选择时比较效果与总代价，区分用户已定、Agent 建议与待验证假设；若为止损说明剩余影响和后续前提>
+
+## 设计与接口
+- 组件职责及调用／数据流：
+- 输入、输出、状态和错误语义：
+- 必须覆盖的异常／失败行为：
+- 对相邻 MVP 的依赖和影响：
+- 普通实现细节可由执行者决定的范围：
+- 本轮已定实施部分：<范围及对应验收；其余候选见下节，延后项见后文>
+
+## 重要未知与候选
+| 问题及其对当前目标的影响 | 候选与代价 | 最小验证 | 成立／不成立／证据不足后的去向 |
+| --- | --- | --- | --- |
+
+没有重要未知时明确写无，不为了模板添加研究任务。
+
+## 验收
+- 核心成功场景：
+- 原始失败／必要反例：<哪些观察支持或反驳作用机制；区分症状缓解与原因消除>
+- 局部与集成验收要求：
+- 真实入口、实际依赖或模型的验证要求：
+- 本轮不证明什么：
+
+## 延后项
+| 能力 | 当前为何不需要 | 重新考虑的具体触发条件 | 延后后仍须遵守的限制 |
+| --- | --- | --- | --- |
+
+## 验证和实施结论
+| 结论 | 基线／条件 | 验证层次与结果 | 证据位置 | 未覆盖或限制 |
+| --- | --- | --- | --- | --- |
+
+采纳的结论直接更新“设计与接口”；失败保留，不改写为通过。
+仅更新实际完成的部分，剩余候选或延后项不因本轮 plan 结束而标为完成。
+
+## 总设计与文档入口同步
+- 涉及的整体决策、MVP 状态或依赖变化：
+- 已同步的位置，或尚待主会话决定的事项：
+- 文档入口受影响的条目与状态／链接：<复用已有入口；无变化时注明>
+# MVP <编号>：<验证问题／实施能力> plan
+
+类型：<验证／实现／必要的修复>
+依据：<子 design 路径与对应范围；实现 plan 指向已定部分，验证 plan 指向待验证问题；必要的总 design 段落>
+依据版本：<设计与代码的真实基线；相关未提交差异的位置>
+执行者／工作区：<已分配时填写真实值，否则写未分配>
+状态：<待执行／执行中／待复核／受阻>
+
+## 0. 当前交接
+- 当前 MVP 核心目标：<与子 design 一致的简短摘录>
+- 本 plan 只完成：
+- 这项工作为何直接影响当前目标：<引用设计中的作用点和预期效果；属于止损时注明边界，不重新定义设计>
+- 当前已完成到哪里、下一步是什么：
+- 必要的已有未提交依赖及其位置：<与本轮新增差量分开；无则省略>
+- 必须保留的接口／验收：
+- 本次不做：
+- 授权范围、环境、实际成本边界和暂停点：
+- 必读输入及交付位置：
+- 项目指令与 Skill 入口：<真实可访问位置；读取当前阶段所需参考>
+- 返工时的实际 blocker、证据及本轮待补差量：<仅返工时填写；原因未知则说明待定位问题，保留原判据与必要前提；修复验收见 §2>
+
+## 1. 工作安排
+| 必要步骤 | 为什么需要／前置依赖 | 预计涉及位置 | 行为判据 |
+| --- | --- | --- | --- |
+
+涉及任务间交接时，指出输入来源、输出契约与后续使用者；复用设计中的准确定义。
+以任务名对应本节产出、§2 的关键验证和 §3 的实际结果；共用检查注明覆盖范围，不另建追踪表。
+交接前核对当前范围覆盖和接口一致性，实际缺口在下方验证或待决项中处理。
+允许执行者作普通内部选择；清单不是允许修改的唯一文件列表。
+新增关联改动必须仍服务当前目标，不能改变已定契约。
+
+## 2. 验证方式
+- 使用什么入口、输入、环境或原始失败：<覆盖设计判断的关键证据／反例，不只观察症状暂时消失>
+- 可以用替身的边界及不能由此证明的能力：
+- 定向回归与最终集成验收：
+- 验证命令／操作及可观察的预期结果：<使用实际项目入口，不臆造命令>
+- 需特别复核的风险或尚未覆盖的失败条件：<仅写当前交付相关项，无则省略>
+- 判定与去向：
+  - 验证 plan：成立／不成立／证据不足分别怎样影响设计。
+  - 实现 plan：通过／部分通过／失败分别还缺什么。
+- 结束条件：<足够支持本次结论或到达明确投入边界>
+
+## 3. 临时执行结果
+- 实际修改和产物：
+- 按任务对应的实际验证、结果和证据链接：<未执行也明确记录，不用整体验收一句话覆盖各任务缺口>
+- 已完成任务、当前停点及下一步：<执行中及时更新，恢复时核对真实状态>
+- 会影响后续任务的计划纠错或实现决定、理由与影响：<重要设计选择须回补 design>
+- 未运行、失败与限制：
+- 是否发现必须由主会话决定的变化：
+- 对子 design 和总 design 的回写建议：
+
+## 4. 主会话复核与收口
+- 差异、目标和证据是否一致：<实际效果是否支持设计判断；止损、原因修复和后果恢复各证明到哪里>
+- 必要复跑及主区整合验收结果：
+- 结论与未完成事项已转入何处：
+- 文档入口受影响条目是否随 design 同步：
+- 活动链接、会话和工作区如何收口：
+
+本文件是临时交接物。有效内容转入 design／证据／handoff 后移除；
+若仍有未交付工作则保留活动 plan。设计不得依赖本文件才能理解当前结论。
+# 当前开发交接
+
+更新时间：<日期与时区>
+主会话／协调负责人：<真实标识或可识别名称>
+项目根与主工作区：<实际路径>
+本文件由主会话维护；子会话返回本区结果和状态，不更新此处。
+
+## 当前焦点
+- 当前 MVP／任务：<相关子 design 链接；无适用设计时说明当前任务，不补造文档>
+- 核心目标：<一句话>
+- 当前环节：<设计／验证／实现／复核／整合／收口>
+- 最新有效设计与活动 plan：<链接；无活动 plan 时写无>
+- 最近已核对的代码基线与相关未提交改动：
+- 项目文档入口：<已有索引或总 design 导航区链接>
+- 项目有效指令与 Skill 主入口：<链接；恢复时若不可用，注明具体缺口>
+- Skill 包根与已核实的阶段能力入口：<本次实际读到的 init／design／plan 位置或宿主名称；
+  与主入口同包根时写“同包根”，未核实或解析失败的照实注明，不填推测路径>
+
+## 活动工作
+| 工作 | 执行上下文／真实 ID | 工作区 | 活动 plan／任务依据 | 当前状态 | 交付／证据位置 |
+| --- | --- | --- | --- | --- | --- |
+
+## 待处理
+- 等待主会话复核：
+- 等待用户决定：<只有实质选择或授权>
+- 实际阻塞、证据位置及未受影响的工作：<返工细节引用活动 plan，不重复维护>
+- 尚影响整合／提交的已有未提交依赖：<无则省略；与本轮改动分开>
+- 成果已保存但尚未整合：
+- 待清理资源及其归属：
+
+## 下一步
+- 下一项具体动作及前提：
+- 谁负责：
+- 当前授权允许继续到哪里：
+
+## 收口状态
+- 子 design／总 design 已回写位置：
+- 文档入口同步情况：<受影响条目；不复制其内容>
+- 活动 plan 是否已移除：
+- 子会话归档与临时资源清理的实际结果：
+- commit／push／发布的实际状态及用户决定：
+
+新会话应核对实际环境后继续。已结束工作从活动表移除；
+本文件保留当前状态，不累积逐轮日志，不替代设计或证据。
+
+codex
+README 已明确把插件框架排除在当前 MVP 外，且仓库没有独立的旧架构笔记，只有 README 中的转述。我建议本轮直接实现文件持久化，等真正需要第三种存储时再评估加载器；它目前不影响“新增任务后重新打开读回”的验收。
+
+现有 `app.py` 两个接口都是占位实现。我会在设计中区分 README 的硬性要求与建议采用的 JSON 格式、ID 规则和错误行为，并将实施计划标为待确认。
+
+exec
+/bin/zsh -lc "mkdir -p fucxxx-codex-spec/designs fucxxx-codex-spec/plans
+cat > fucxxx-codex-spec/design.md <<'EOF'
+# 本地任务清单：总设计
+
+设计状态：草案，待用户审阅；实现尚未开始；验收未运行。
+更新时间：2026-10-28（Asia/Tokyo）
+
+## 目标与依据
+
+依据 [README](../README.md)，用户能向指定文件增加任务，并在重新打开后读回。当前用户要求先交付总 design、当前 MVP 子 design 和实施 plan，确认后才开发。
+
+硬性要求：Python 标准库、离线运行、数据路径由调用者指定；标题去首尾空白后非空；空标题抛 ValueError 且不写文件；文件不存在时读取为空列表；UTF-8 保存中文；同文件 ID 唯一。遵守 [AGENTS.md](../AGENTS.md)：不安装、不 push、不修改项目目录以外资料。
+
+## 当前整体位置与导航
+
+基线 "'`8eeac28`，开始时工作区干净。现有 `app.py` 的两个函数均直接抛 NotImplementedError；`test_app.py` 有 roundtrip 和 blank 两个测试。没有独立旧架构笔记、已有设计或 handoff；旧架构意见仅见 README 转述。上述为静态读取结论，未运行测试。
+
+| 何时读取 | 文档 | 当前状态 |
+| --- | --- | --- |
+| 核对接口和验收 | [当前 MVP](designs/local-tasks.md) | 草案；未实现、未验收 |
+| 用户确认后实施 | [实施 plan](plans/local-tasks-impl.md) | 待审阅，不构成开发授权 |
+| 恢复工作 | [handoff](handoff.md) | 等待用户确认 |
+
+## 整体设计
+
+复用 `app.py`，公开 `add_task(path, title)`、`list_tasks(path)`，接口详细契约以当前子设计为准。调用者拥有路径选择；函数负责标题处理、读取、ID 分配、追加及保存；文件承担跨调用、跨进程持久化。`test_app.py` 通过真实文件和新 Python 进程验证链路。
+
+数据流：调用者 → 标题校验 → 读取指定文件 → 分配唯一 ID → 追加并保存 → 返回任务；重新启动调用者 → 读取同一文件 → 返回任务列表。不得只靠进程内缓存证明持久化。
+
+建议采用单个 UTF-8 JSON 数组，保持新增顺序；不增加服务、存储接口框架或插件发现机制。文件格式与错误语义是本次提出的待审阅设计选择，不冒充 README 已定内容。
+
+## MVP 划分与范围取舍
+
+| 能力 | 可交付结果 | 依赖 | 状态 |
+| --- | --- | --- | --- |
+| MVP 1：本地任务持久化 | 新增后跨进程读回，校验与 ID 正确 | Python 标准库、可读写文件路径 | 当前唯一 MVP；设计待审、实现未开始、验收未运行 |
+| 后续候选 | 通知中心、插件框架、多人权限服务 | 真实需求及新的范围确认 | 延后，无实施计划 |
+
+### 插件加载器评估
+
+| 方案 | 对当前目标的作用 | 成本与判断 |
+| --- | --- | --- |
+| 直接 JSON 文件读写（推荐） | 直接补齐新增与持久化链路 | 一个模块即可实现和验证 |
+| 先实现插件加载器 | 当前没有第二、第三种存储，不能增加本轮验收覆盖 | 新增插件发现、注册、生命周期和错误契约，扩大调试面，延后 |
+
+不做加载器不会使任何当前验收失败。README 明确排除插件框架，旧笔记意见属于历史候选，不覆盖当前范围。等真正需要第三种存储时，比较实际存储差异，再决定普通函数分派、存储接口或动态加载是否必要；不预留空插件骨架，不把候选自动升级为承诺。
+
+## 整体验收与交付边界
+
+当前全部成功条件见子设计 A1–A7。必须在同一实现版本通过原测试及新增反例，并由两个独立 Python 进程写入、读回真实中文任务。只有函数返回成功或 JSON 格式正确，不足以证明产品目标完成。
+
+本轮只交付待审文档；已完成源码、测试及需求静态核对，尚无运行证据。并发写入、崩溃恢复、大规模文件性能不在当前证明范围。未提交、未推送、未发布。
+EOF
+cat > fucxxx-codex-spec/designs/local-tasks.md <<'"'EOF'
+# MVP 1：本地任务持久化
+
+总设计依据：[目标与范围](../design.md)。
+设计：草案待审；实现：未开始；验收：未运行。
+更新时间：2026-10-28（Asia/Tokyo）
+
+## 核心结果与现状
+
+用户通过 "'`add_task` 写入指定路径，结束进程后通过 `list_tasks` 读回完整任务。必须保留校验先于写入、中文持久化、同文件 ID 唯一和旧任务不丢失。
+
+`app.py` 现为两个 NotImplementedError 占位函数；可复用其签名以及 `test_app.py` 的两个原始测试。缺口是完整读写链路，非插件装配。静态判断现有实现无法满足验收，尚未实际运行测试。
+
+本轮不做 UI、CLI、任务删除或修改、通知、插件、权限服务、并发锁或自动数据修复。
+
+## 设计与接口
+
+以下标为“要求”的内容来自 README；其余为本次推荐、待随文档审阅的设计决定。
+
+| 接口 | 输入与输出 | 行为和错误 |
+| --- | --- | --- |
+| `add_task(path, title)` | path 为字符串或 pathlib.Path，title 为 str；返回含 `id`、`title` 的 dict | 要求：先 strip，空标题抛 ValueError，不写文件。建议：读取后追加，保存成功才返回；存储规范化后的标题 |
+| `list_tasks(path)` | 同样的 path；返回任务 dict 列表 | 要求：文件不存在返回 []。建议：只读、不创建文件；按新增顺序返回，每次从磁盘读取 |
+
+推荐存储为 UTF-8 JSON 数组，例如 `[{"id": 1, "title": "中文任务"}]`，使用 `ensure_ascii=False` 保存可直接阅读的中文。允许重复标题，但每个任务 ID 不同；不共享返回对象与进程内存储缓存。
+
+推荐 ID 为正整数：空列表从 1 开始；每次从文件中读取最大 ID 后加 1。唯一性边界是有效数据文件上的串行调用，重启后继续增长；不同文件可复用相同 ID。不承诺并发新增不丢失。
+
+调用者负责提供存在的父目录和有效任务文件，程序不递归创建目录。读文件仅将 FileNotFoundError 视为文件缺失；权限和其他 I/O 错误向上抛出；非法 JSON 保留 JSONDecodeError，不将其当空列表覆盖。有效文件结构为上述程序生成的任务数组；人工修改形成的其他合法 JSON 结构不在当前输入契约内，不增加通用 Schema 验证器。
+
+空标题必须在读取或打开写入文件之前拒绝：无论文件缺失还是已有内容，都不能创建或改动文件。不承诺非 str 标题的统一异常类型。
+
+本轮推荐直接读取、追加、写回 JSON。原子替换、断电保证和并发事务均不属于当前需求；正常保存成功后的跨进程读回属于验收。私有 helper 命名、JSON 缩进等普通细节留给实施者，不拆分存储框架。
+
+## 重要未知
+
+没有阻碍撰写计划的关键未知。上述格式、ID 与错误语义是明确提出的建议，待用户确认后生效；若审阅改变契约，先同步设计与计划再开发。没有独立旧笔记可供进一步核对，不据此推断额外需求。
+
+## 验收
+
+所有测试使用项目内临时目录中的真实文件，不使用 mock 文件系统。
+
+| 编号 | 输入和操作 | 断言 |
+| --- | --- | --- |
+| A1 | 缺失路径调用 list_tasks | 返回 [] 且文件仍不存在 |
+| A2 | 新增 `'"' 中文任务 '"'`，再新增 `'"'second'"'` | 标题为 `中文任务`；返回 dict；读回严格等于两次返回值组成的列表 |
+| A3 | 空字符串、空格、制表和换行组成的标题；分别作用于缺失和已有文件 | 均抛 ValueError；缺失文件不创建；已有文件字节完全不变 |
+| A4 | 同文件连续新增含重复标题的多条任务，再由新进程追加 | ID 均唯一、已有 ID 不变，新 ID 大于旧最大值，保留全部旧任务 |
+| A5 | 进程一写入中文任务后退出，进程二从相同路径读回 | 与写入返回内容一致；原文件能以 UTF-8 解码且包含中文原文 |
+| A6 | 两个不同路径分别写入，并混用 str 和 Path | 各自内容独立；两种路径形式均可用 |
+| A7 | 已有非法 JSON 文件，执行读取和有效标题新增；另对缺失父目录新增 | 非法 JSON 抛 JSONDecodeError 且原字节不变；缺失父目录抛 FileNotFoundError，无目录自动创建 |
+
+局部先运行对应测试；最终同一版本运行 README 指定的 `python3 -B -m unittest -v`，包含原始两个测试与 A1–A7。跨进程测试应使用标准库 subprocess 调用 `sys.executable -B`，真实调用 app 函数。通过仅证明本地串行持久化，不证明并发、崩溃恢复或任意外部文件兼容。
+
+## 延后项与结论
+
+插件加载器按总设计延后；真实出现第三种存储再重新评估。通知和多人权限仅在有明确用户场景与授权后规划。延后不削弱本轮文件持久化和输入校验要求。
+
+当前结论仅为源码与需求静态核对；没有实施或测试通过证据。总设计导航及 handoff 已同步为待审，后续执行结果须回写本节和总设计。
+EOF
+cat > fucxxx-codex-spec/plans/local-tasks-impl.md <<'"'EOF'
+# MVP 1：本地任务持久化实施 plan
+
+类型：实施草案；状态：待用户审阅，所有步骤未执行。
+依据：[MVP 子设计](../designs/local-tasks.md) 的接口与 A1–A7；[总设计](../design.md)。
+代码基线："'`8eeac28`，开始时工作区干净；设计为本轮新增未提交草案。
+执行者：建议由主会话顺序实施，尚未启动；工作区为当前项目根。
+
+## 0. 交接与边界
+
+目标是补齐 `app.py` 两个占位函数，让用户新增任务后可重新打开读回。只改当前链路涉及的 `app.py`、`test_app.py` 和必要项目文档。接口、格式、ID、错误语义均引用子设计，不由 plan 另行定义。
+
+本轮仅获文档编写授权；必须等待用户确认后才新增测试或实现。离线、仅标准库、不安装、不 push、不修改项目目录以外资料；不提交代码。插件加载器及总设计列出的后续候选均不进入执行步骤。
+
+执行前读 `AGENTS.md`、总 design、子 design、handoff 及 `/Users/caihaoming/.codex/skills/fucxxx-codex-spec/references/execution.md`；核对 Git 根、状态及用户确认的文档版本，保留他人改动。若确认改变契约，先更新依据。
+
+## 1. 工作安排
+
+### T1：建立新增与读回的真实链路
+
+文件：`test_app.py`、`app.py`。保留原有 `test_roundtrip`、`test_blank`，避免换样例绕开验收。
+
+- [ ] 补充 A1–A3、A6 的测试；把临时文件创建位置约束在项目内，确保缺失读取无副作用、重复追加保留旧任务及空标题不改已有文件。
+- [ ] 运行 `python3 -B -m unittest -v test_app.Tasks`，记录实际失败断言，区分占位实现失败与测试环境问题。
+- [ ] 实现 `add_task(path, title)`、`list_tasks(path)` 的串行 JSON 文件链路，严格沿用子设计的规范化、ID 和先校验后写入行为，不引入插件层。
+- [ ] 重跑同一命令，确认对应测试通过。
+
+### T2：确认跨进程与失败路径
+
+依赖 T1；文件：`test_app.py`，仅在反例暴露缺口时修正 `app.py`。
+
+- [ ] 补充 A4–A5 的真实子进程测试：进程一写入并输出返回值，退出后进程二读取并追加，再读回；断言旧记录保留、ID 唯一且递增、UTF-8 中文原文。使用 `sys.executable -B` 和项目根 cwd，禁止用同进程重复调用替代重新打开验收。
+- [ ] 补充 A7 的非法 JSON 不覆盖、缺失父目录不创建测试。先运行对应测试，按实际结果处理；新测试已经通过时无需故意制造失败。
+- [ ] 运行 `python3 -B -m unittest -v`；同一代码版本全部通过才满足 MVP 验收。
+
+### T3：复核与回写
+
+依赖 T2；位置：总 design、子 design、handoff，必要时 README 的使用说明。
+
+- [ ] 检查变更仅服务当前范围，A1–A7 均有断言，原测试保留；核对未加入插件或额外服务。
+- [ ] 在子设计记录实际命令、基线、结果和未覆盖边界，同步总设计与 handoff。结果不通过则保留活动 plan 和具体剩余项。
+- [ ] 完成后按主 Skill 收口参考保存必要结果，再移除已结束 plan 及活动链接；仅清理本轮测试临时资源，不自动 commit/push。
+
+## 2. 验证与判定
+
+测试入口来自 README，现有测试类为 `test_app.Tasks`。本轮未运行命令；新增验收测试尚未编写。后续测试使用 `tempfile.TemporaryDirectory(dir=项目根)`，子进程加 `-B`，防止缓存和临时数据写到项目外。
+
+T1 覆盖 A1–A3、A6；T2 覆盖 A4–A5、A7 并集成回归全部验收。真实文件、真实子进程是必要证据，mock 和仅返回值检查不可替代。标准库能力不需要在线验证或安装依赖。
+
+若部分测试通过，仅记部分通过；跨进程失败即用户目标未达成。任一失败保留原样例，定位读写、ID 或测试环境原因后做定向修复，最终在同一版本重跑完整入口；不得拼接不同版本的通过结果。
+
+## 3. 当前结果与复核
+
+T1/T2/T3 均未执行，产品测试未运行，未修改代码。当前仅完成文档草案及主会话自检：接口与设计一致，A1–A7 有对应任务，插件评估未变成实施范围。无独立审阅者结论。
+
+当前停点：交用户审阅。下一步须取得用户明确确认，然后再按实施流程执行；本 plan 的存在不代表授权开发或 MVP 完成。
+EOF
+cat > fucxxx-codex-spec/handoff.md <<'"'EOF'
+# 当前开发交接
+
+更新时间：2026-10-28（Asia/Tokyo）；负责人：当前 Codex 主会话。
+项目根："'`<T>/project`。
+
+## 当前焦点
+
+当前任务是根据 README 交付待审总 design、当前 MVP 子 design 与实施 plan；用户明确要求确认后再开发。
+
+入口：[总设计与导航](design.md)；当前 MVP：[本地任务持久化](designs/local-tasks.md)；活动计划：[实施 plan](plans/local-tasks-impl.md)。均为本轮新增草案，尚未获用户确认。
+
+基线 `8eeac28`；初始工作区干净；`app.py` 为两个占位函数，`test_app.py` 有两个原始测试。本轮仅新增项目设计资料，不改产品代码与测试，不运行产品测试。
+
+有效项目指令：[AGENTS.md](../AGENTS.md)。已实际读取 Skill 包根 `/Users/caihaoming/.codex/skills` 下的入口：
+
+- `fucxxx-codex-spec/SKILL.md`
+- `fucxxx-codex-spec-design/SKILL.md`
+- `fucxxx-codex-spec-plan/SKILL.md`
+- 主包 `references/design-and-plan.md` 及四份文档模板。
+
+init 未加载，不进行重新初始化；开发时按主入口读取执行与恢复参考。
+
+## 活动工作与待决项
+
+| 工作 | 执行上下文 | 位置 | 状态 |
+| --- | --- | --- | --- |
+| 设计与计划审阅 | 当前主会话，无子会话 | 本项目资料根 | 文档已形成，等待用户审阅 |
+
+建议本轮不实现插件加载器：README 将其排除在当前 MVP 外，第三种存储真实出现时再评估。未找到独立旧架构笔记，只有 README 转述。
+
+待用户确认的是整套设计与 plan，包括推荐 JSON 格式、递增整数 ID、串行读写及错误边界。无额外环境阻塞。已做主会话文档自检，无独立审阅或运行验收。
+
+## 下一步与授权
+
+先等待用户审阅；确认后主会话核对实际 Git 差量与设计版本，再实施当前 plan。若用户提出修改，先修改对应文档。不得把此 handoff 或 plan 当作开发授权。
+
+当前允许写设计资料，不允许提前开发；仅离线标准库，不安装、不 push、不修改项目外资料。无提交、推送、发布；无子会话或待清理运行资源。活动 plan 保留，MVP 未实现、未验收。
+EOF
+ git diff --check
+ git status --short' in <T>/project
+ succeeded in 0ms:
+?? fucxxx-codex-spec/
+
+exec
+/bin/zsh -lc "python3 -B - <<'PY'
+from pathlib import Path
+import re
+root = Path('fucxxx-codex-spec')
+files = list(root.rglob('*.md'))
+for file in files:
+    body = file.read_text(encoding='utf-8')
+    for target in re.findall(r'\\]\\((["'^)]+)'"\\)', body):
+        assert (file.parent / target.split('#')[0]).exists(), (file, target)
+    assert all(line == line.rstrip() for line in body.splitlines()), file
+assert len(files) == 4
+print('4 份文档：本地链接、UTF-8 读取及行尾空白检查通过')
+PY
+ git diff --exit-code -- app.py test_app.py README.md AGENTS.md" in <T>/project
+ succeeded in 0ms:
+4 份文档：本地链接、UTF-8 读取及行尾空白检查通过
+
+codex
+已完成待审文档：
+
+- [总 design](fucxxx-codex-spec/design.md)
+- [当前 MVP 子 design](fucxxx-codex-spec/designs/local-tasks.md)
+- [实施 plan](fucxxx-codex-spec/plans/local-tasks-impl.md)
+- [恢复交接](fucxxx-codex-spec/handoff.md)
+
+建议本轮**不加入插件加载器**：它不影响当前持久化验收，README 也明确将插件框架延后；真正需要第三种存储时再评估。
+
+请重点审阅建议的 JSON 存储、递增整数 ID、串行读写和错误语义。文档链接检查通过；代码、测试未修改，产品测试未运行。等待你确认后再开发。
+tokens used
+38,972
